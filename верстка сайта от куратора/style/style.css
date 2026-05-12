@@ -1,0 +1,335 @@
+body{
+    background: #E5E5E5;
+    font-family: Roboto;
+}
+.razmer{
+    width: 1920px;
+    /* border: 1px solid rgb(0, 0, 0); */
+    margin: auto;
+    margin-bottom: -2px;
+}
+#hapka{
+    position: relative;
+    height: 144px;
+    background: white;
+}
+#telo_1{
+    height: 518px;
+    background: #D44B4B;
+}
+#telo_2{
+    height: 2016px;
+    background: white; 
+    position: relative;
+}
+#Mag_w{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    margin-top: 22px;
+    margin-left: 250px;
+    z-index: 1;
+}
+#ramka{
+    width: 1920px;
+    height: 518px;
+
+}
+#text{
+    position: relative;
+    margin: 0px;
+    padding-top: 55px;
+    padding-left: 250px;
+    width: 640px;
+    height: 265px;
+    text-decoration-color: white;
+    font-size: 46px;
+    color: white;
+    z-index: 1;
+}
+#kupit_1{
+    position: relative;
+    display: block;
+    width: 410px;
+    height: 70px;
+    border: 0px;
+    margin-top: 40px;
+    margin-left: 250px;
+    font-size: 24px;
+    border-radius: 10px;
+    z-index: 1;
+
+}
+#kupit_1:hover{
+    background: #e6e6e6;
+}
+#kupit_1:active {
+    transform: scale(0.98); 
+}
+#hous{
+    position: relative;
+    top: -420px;
+    left: 780px;
+    width: 900px;
+    height: 516px;
+    z-index: 0;
+}
+.T_R{
+    border: 1px solid white; 
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 4px;
+    border-radius: 20px;
+
+    
+}
+#mini{
+    font-size: 17px;
+}
+ul{
+    margin: 0 auto;
+}
+.ramka_chel{
+    position: relative;
+    margin-top: 140px;
+    margin-left: 40px;
+    display: inline-block;
+    width: 400px;
+    height: 420px;
+}
+ul:first-child{
+    margin-left: 225px;
+}
+.test_p{
+    position:absolute;
+    margin: 0%;
+    top: -20px;
+    left: 20px;
+    font-size: 65px;
+    font-weight: 600;
+    font-family:monospace;
+    color: #504e6d;
+    z-index: 1;
+}
+.chel{
+    border: 2px solid gainsboro;
+    border-radius: 40px;
+    border-top-left-radius: 0%;
+    top: 5%;
+    left: 5%;
+    position: absolute;
+    width: 90%;
+    height: 90%;
+}
+#imposter{
+    position: absolute;
+    margin-top: 100px;
+    left: 0px;
+    height: 1155px;
+    background: #FAFEFF;
+}
+#imposter p{
+    width: 43%;
+    font-size: 42px;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    color: #090D3F;
+}
+#imposter div p{
+    width: 580px;
+    font-size: 38px;
+    text-align: left;
+}
+#imposter div p:first-of-type{
+    width: 600px;
+    font-size: 15px;
+    text-align: left;
+    margin-bottom: 70px;
+}
+#imposter div p span{
+    color: #D44B4B;
+}
+#imposter p .T_R{
+    border-color: #D44B4B;
+
+}
+#imposter div {
+    background: #FFFFFF;
+    position: relative;
+    width: 52%;
+    height: 60%;
+    margin: auto;
+
+    border-radius: 30px;
+}
+#imposter div p, button{
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    left: 0;
+}
+#imposter div div{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 33%;
+    top: 10%;
+}
+#imposter div div p:nth-child(4){
+    font-size: 16px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 25px;
+    width: 340px;
+    line-height: 30px;
+    color: black;
+}
+#imposter div div li{
+    position: relative;
+    left: 0;
+    width: 350px;
+    line-height: 30px;
+}
+#imposter div div button{
+    width: 100%;
+    height: 20%;
+    border-radius: 10px;
+    border: 0;
+    font-size: 24px;
+    margin-top: 7%;
+    margin-bottom: 7%;
+    background: #D44B4B;
+    color: white;
+}
+#imposter div div button:active{
+    transform: scale(0.98); 
+}
+#imposter div img{
+    position: relative;
+    border-radius: 30px;
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+    height: 100%;
+    width: 27%;
+    z-index: 0;
+}
+#imposter div img:nth-child(2){
+    position: absolute;
+    width: 100px;
+    height: 200px;
+    left: 840px;
+    top: 360px;
+    z-index: 3;
+}
+.hapka_ul{
+    position: relative;
+    margin-top: 40px;
+    margin-left: 40px;
+    display: inline-block;
+    width: 230px;
+    height: 30px;
+}
+.hapka_ul:first-of-type{
+    margin-left: 500px;
+}
+.but_h{
+    width: 230px;
+    height: 30px;
+    position: relative;
+    font-size: 20px;
+    background: white;
+    border: 0;
+    font-family: Roboto;
+    border-radius: 20px;
+}
+.but_h:hover{
+    background: #e6e6e6;
+}
+#Call_white{
+    position: absolute;
+    width: 40px;
+    left: 0;
+    bottom: 0px;
+    
+}
+#nomer{
+    display: inline-block;
+    position: absolute;
+    width: 180px;
+    left: 45px;
+    bottom: -12px;
+}
+#Prezvon{
+    width: 260px;
+    height: 60px;
+    border: 1px solid rgb(85, 96, 199);
+    color: rgb(85, 96, 199);
+    border-radius: 10px;
+}
+#Prezvon:active, .but_h:active{
+    transform: scale(0.98);
+}
+#podval{
+    position: relative;
+    height: 201px;
+    background: #475658;
+}
+#podval img{
+    margin-top: 30px;
+    margin-left: 250px;
+    width: 160px;
+}
+#podval ul{
+    position: absolute;
+    display: inline-block;
+    margin-top: 60px;
+    left: 700px;
+}
+#podval li:nth-child(1){
+    display: block;
+}
+#podval li:nth-child(3){
+    position: absolute;
+    left: 600px;
+    top: 0px;
+}
+#podval li button{
+    background: 0;
+    width: 400px;
+    text-align: left;
+    color: white;
+    font-size: 20px;
+    border: 0;
+}
+#podval li{
+    display: inline-block;
+    margin-bottom: 1px;
+}
+#podval nav{
+    position: absolute;
+    left: 70px;
+    top: -10px;
+    line-height: 25px;
+}
+#Vredn{
+    position: absolute;
+    left: 70px;
+    top: -10px;
+    line-height: 25px;
+}
+#podval ul li nav span{
+    left: 70px;
+    top: -10px;
+    line-height: 60px;
+    width: 200px;
+}
+#podval li img{
+    width: 40px;
+    display: inline-block;
+    margin: 0;
+    z-index: 0;
+}
