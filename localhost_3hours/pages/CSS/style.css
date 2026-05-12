@@ -1,0 +1,168 @@
+/* *{
+    display: inline-block;
+} */
+@font-face {
+     
+    font-family: 'Inter';
+    src: url(http://fonts.gstatic.com/s/roboto/v15/mErvLBYg_cXG3rLvUsKT_fesZW2xOQ-xsNqO47m55DA.woff2);
+
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+*{
+    font-family: "Inter";
+}
+#container{
+    width: 1920px;
+    margin: 0 auto;
+}
+
+#header{
+    background-color: rgb(238, 123, 103);
+    width: 100%;
+}
+
+#body{
+    background-color: rgb(212, 205, 198);
+    width: 100%;
+}
+
+
+
+
+/* Авторизации */
+#login_body{
+    height: 100vh;
+    background-color: #9E9E9E;
+    position: relative;
+
+}
+
+.login_wind{
+    width: 320px;
+    height: 280px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+     
+}
+
+.login_wind p:first-child{
+    margin:  16px auto;
+    display: block;
+    margin-top: 16px;
+    width: min-content;
+    font-size: 36px;
+}
+
+.login_wind input{
+    margin:  16px auto;
+    display: block;
+    width: 250px;
+    height: 46px;
+    border: none;
+    background-color: #D9D9D9;
+}
+
+.login_wind button{
+    margin:  16px auto;
+    display: block;
+    width: min-content;
+    height: 32px;
+    border: none;
+    background-color: #D9D9D9;
+}
+
+.login_wind a{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+/* Регистрация */
+
+#registr_body{
+    height: 100vh;
+    background-color: #9E9E9E;
+    position: relative;
+
+}
+
+.registr_wind{
+    width: 320px;
+    height: min-content;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+     
+}
+
+.registr_wind p:first-child{
+    margin:  16px auto;
+    display: block;
+    margin-top: 16px;
+    width: min-content;
+    font-size: 36px;
+}
+
+.registr_wind input{
+    margin:  16px auto;
+    display: block;
+    width: 250px;
+    height: 46px;
+    border: none;
+    background-color: #D9D9D9;
+}
+
+.registr_wind button{
+    margin:  16px auto;
+    display: block;
+    width: min-content;
+    height: 32px;
+    border: none;
+    background-color: #D9D9D9;
+}
+
+.registr_wind a{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+input:valid {
+  background-color: palegreen;
+}
+
+input:invalid {
+  background-color: lightpink;
+}
+
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+thead,
+tfoot {
+  background-color: rgb(228 240 245);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
