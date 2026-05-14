@@ -1,8 +1,8 @@
 <?php
 /**
  * Точка входа в приложение
- * Перенаправляет на главную страницу
+ * Перенаправляет на главную страницу пользователя (относительный путь)
  */
 
-header('Location: /photoservice/pages/user/main.php');
+header('Location: pages/user/main.php');
 exit;

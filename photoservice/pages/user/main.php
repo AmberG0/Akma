@@ -1,55 +1,89 @@
 <?php
 /**
  * Главная страница сайта
- * ИП Барбарян Карен Аветикович
+ * ИП Барабарян Карен Аветикович
  */
 
-$pageTitle = 'СтройУслуги - Главная | ИП Барбарян К.А.';
+$pageTitle = 'СтройСервис - Главная | ИП Барабарян К.А.';
 
-include '../includes/header.php';
+include 'includes/header.php';
+require_once '../../i/WebsiteBackend/db.php';
 ?>
 
-<!-- Hero секция -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-content">
+<main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-container">
             <div class="hero-slider">
-                <!-- Заглушка для изображения (позже будут реальные фото) -->
-                <div class="slider-placeholder">
-                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <div class="slide active" data-index="0">
+                    <div class="slide-content">
+                        <h3>Земляные работы</h3>
+                        <p>Аренда спецтехники и выполнение работ любой сложности</p>
+                    </div>
                 </div>
-                <div class="slider-indicators">
-                    <span class="indicator active" data-slide="0"></span>
-                    <span class="indicator" data-slide="1"></span>
-                    <span class="indicator" data-slide="2"></span>
-                    <span class="indicator" data-slide="3"></span>
+                <div class="slide" data-index="1">
+                    <div class="slide-content">
+                        <h3>Строительство под ключ</h3>
+                        <p>От фундамента до кровли с гарантией качества</p>
+                    </div>
+                </div>
+                <div class="slide" data-index="2">
+                    <div class="slide-content">
+                        <h3>Благоустройство</h3>
+                        <p>Комплексное благоустройство территорий</p>
+                    </div>
+                </div>
+                
+                <div class="slider-controls">
+                    <button class="prev-slide">&lt;</button>
+                    <div class="indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                    </div>
+                    <button class="next-slide">&gt;</button>
                 </div>
             </div>
-            <div class="hero-description">
-                <h2>Строительные работы</h2>
-                <p id="hero-description-text">Профессиональное выполнение строительных работ любой сложности. Более 15 лет опыта.</p>
-                <button class="cta-button" onclick="location.href='/pages/user/services.php'">Смотреть услуги</button>
+            
+            <div class="hero-info">
+                <h2>Почему выбирают нас</h2>
+                <div class="info-block">
+                    <h3 id="info-title">Земляные работы</h3>
+                    <p id="info-desc">Используем современную спецтехнику. Работаем быстро и точно в срок. Соблюдаем все технические нормы.</p>
+                    <ul class="features-list">
+                        <li>✓ Опыт работы более 15 лет</li>
+                        <li>✓ Собственный парк техники</li>
+                        <li>✓ Работаем по договору</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- О компании -->
-<section class="about" id="about">
-    <div class="container">
-        <h2>О компании</h2>
-        <div class="about-content">
-            <p><strong>ИП Барбарян Карен Аветикович</strong> — надежный партнер в сфере строительных услуг с 2007 года.</p>
-            <p>Мы специализируемся на выполнении широкого спектра строительных работ: от земляных работ до комплексного благоустройства территорий. Наша команда состоит из квалифицированных специалистов, использующих современную технику и передовые технологии.</p>
-            <p><strong>Наш адрес:</strong> 413124, Саратовская обл., г. Энгельс, пр-д 1-й Студенческий, д. 2а</p>
-            <p><strong>Телефон:</strong> +7 845 352-82-92</p>
-            <p><strong>Режим работы:</strong> Пн–Пт, 8:30–17:00</p>
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <h2>О компании</h2>
+            <div class="about-content">
+                <p>ИП Барабарян Карен Аветикович успешно работает на рынке строительных услуг с 2007 года. Мы специализируемся на выполнении комплексных строительных работ, аренде спецтехники и благоустройстве территорий.</p>
+                <p>Наша команда состоит из квалифицированных специалистов: прорабов, трактористов и разнорабочих, готовых выполнить заказ любой сложности в установленные сроки.</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Лет опыта</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Выполненных объектов</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Гарантия качества</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+</main>
 
-<?php
-include '../includes/footer.php';
-?>
+<?php include 'includes/footer.php'; ?>

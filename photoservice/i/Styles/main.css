@@ -1,5 +1,5 @@
 /* ========================================
-   Основные стили - ИП Барбарян К.А.
+   Основные стили - ИП Барабарян К.А.
    Специальность 09.02.07
    Цвета: желтый (#FFD700), белый (#FFFFFF), черный (#1A1A1A)
    ======================================== */
@@ -12,34 +12,33 @@
 }
 
 :root {
-    --color-primary: #FFD700;
-    --color-primary-dark: #E5C100;
-    --color-black: #1A1A1A;
-    --color-white: #FFFFFF;
-    --color-gray-light: #f5f5f5;
-    --color-gray: #666666;
-    --color-border: #dddddd;
-    --font-main: 'Arial', sans-serif;
-    --transition-speed: 0.3s;
+    --primary-yellow: #FFD700;
+    --primary-dark: #1A1A1A;
+    --text-light: #FFFFFF;
+    --text-dark: #333333;
+    --bg-light: #FFFFFF;
+    --bg-gray: #F5F5F5;
+    --border-color: #DDDDDD;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Темная тема */
+/* Темная тема - исправленная читаемость */
 body.dark-theme {
-    --color-black: #FFFFFF;
-    --color-white: #1A1A1A;
-    --color-gray-light: #2a2a2a;
-    --color-gray: #cccccc;
-    --color-border: #444444;
-    background-color: #121212;
-    color: #FFFFFF;
+    --primary-dark: #FFD700; /* Желтый акцент становится основным текстом */
+    --text-light: #E0E0E0;   /* Светло-серый текст вместо чисто белого */
+    --text-dark: #E0E0E0;    /* Основной текст светлый */
+    --bg-light: #121212;     /* Глубокий черный фон */
+    --bg-gray: #1E1E1E;      /* Темно-серый для секций */
+    --border-color: #333333;
+    --shadow: 0 4px 6px rgba(0,0,0,0.5);
 }
 
 body {
-    font-family: var(--font-main);
-    background-color: var(--color-white);
-    color: var(--color-black);
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
     line-height: 1.6;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -48,29 +47,12 @@ body {
     padding: 0 20px;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: color var(--transition-speed);
-}
-
-ul {
-    list-style: none;
-}
-
-button {
-    cursor: pointer;
-    font-family: inherit;
-}
-
-/* ========================================
-   Верхняя панель (Top Bar)
-   ======================================== */
+/* Top Bar */
 .top-bar {
-    background-color: var(--color-black);
-    color: var(--color-white);
+    background-color: var(--primary-dark);
+    color: var(--text-light);
     padding: 8px 0;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .top-bar .container {
@@ -79,60 +61,42 @@ button {
     align-items: center;
 }
 
-.top-bar-left,
-.top-bar-right {
+.top-links {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
-.top-link {
-    color: var(--color-white);
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 12px;
-    transition: color var(--transition-speed);
+.top-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.8;
 }
 
-.top-link:hover {
-    color: var(--color-primary);
-}
-
-.top-separator {
-    color: var(--color-gray);
+.top-links a:hover {
+    opacity: 1;
+    color: var(--primary-yellow);
 }
 
 .theme-btn {
-    color: var(--color-primary);
-}
-
-.city-btn {
     background: none;
-    border: 1px solid var(--color-gray);
-    color: var(--color-white);
-    padding: 4px 12px;
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    padding: 2px 8px;
+    cursor: pointer;
     border-radius: 4px;
     font-size: 12px;
-    transition: all var(--transition-speed);
 }
 
-.city-btn:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+.theme-btn:hover {
+    background-color: rgba(255,255,255,0.1);
 }
 
-/* ========================================
-   Шапка (Header)
-   ======================================== */
+/* Header */
 .main-header {
-    background-color: var(--color-white);
-    padding: 20px 0;
-    border-bottom: 2px solid var(--color-primary);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: background-color var(--transition-speed);
+    background-color: var(--bg-light);
+    padding: 15px 0;
+    border-bottom: 2px solid var(--primary-yellow);
+    box-shadow: var(--shadow);
 }
 
 .header-content {
@@ -142,96 +106,72 @@ button {
     gap: 20px;
 }
 
-.header-left {
-    min-width: 100px;
-}
-
-.admin-btn {
-    font-size: 12px;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-    padding: 6px 12px;
-    border-radius: 4px;
-    background: transparent;
-    transition: all var(--transition-speed);
-}
-
-.admin-btn:hover {
-    background-color: var(--color-primary);
-    color: var(--color-black);
-}
-
 .logo {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
-    color: var(--color-black);
+    color: var(--text-dark);
+    text-decoration: none;
 }
 
 .logo span {
-    color: var(--color-primary);
+    color: #D4B200; /* Чуть темнее желтого для контраста на белом */
 }
 
-.main-nav ul {
+body.dark-theme .logo span {
+    color: var(--primary-yellow);
+}
+
+.main-nav {
     display: flex;
-    gap: 30px;
+    gap: 20px;
 }
 
 .main-nav a {
-    color: var(--color-black);
+    text-decoration: none;
+    color: var(--text-dark);
     font-weight: 500;
-    padding: 8px 0;
-    position: relative;
-}
-
-.main-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-primary);
-    transition: width var(--transition-speed);
-}
-
-.main-nav a:hover::after {
-    width: 100%;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s;
 }
 
 .main-nav a:hover {
-    color: var(--color-primary);
+    background-color: var(--bg-gray);
+    color: #D4B200;
 }
 
 .cart-btn {
-    color: var(--color-primary) !important;
+    border: 1px solid var(--primary-yellow);
+    color: var(--text-dark) !important;
+}
+
+body.dark-theme .cart-btn {
+    color: var(--text-light) !important;
 }
 
 .cta-button {
-    background-color: var(--color-primary);
-    color: var(--color-black);
-    padding: 12px 24px;
+    background-color: var(--primary-yellow);
+    color: var(--primary-dark);
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 14px;
-    transition: all var(--transition-speed);
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 .cta-button:hover {
-    background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
+    transform: scale(1.05);
+    background-color: #E5C100;
 }
 
-/* ========================================
-   Hero секция
-   ======================================== */
-.hero {
+/* Hero Section */
+.hero-section {
     padding: 60px 0;
-    background-color: var(--color-gray-light);
-    transition: background-color var(--transition-speed);
+    background-color: var(--bg-gray);
 }
 
-.hero-content {
+.hero-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
@@ -239,144 +179,161 @@ button {
 }
 
 .hero-slider {
-    background-color: var(--color-black);
+    background-color: var(--primary-dark);
     height: 400px;
     border-radius: 8px;
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-white);
-    font-size: 48px;
-    position: relative;
-    overflow: hidden;
+    color: var(--text-light);
 }
 
-.slider-image {
+.slide {
+    display: none;
+    text-align: center;
+    padding: 20px;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
 }
 
-.slider-image.active {
-    opacity: 1;
+.slide.active {
+    display: block;
+    animation: fadeIn 0.5s;
 }
 
-.slider-indicators {
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slider-controls {
     position: absolute;
     bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.indicators {
     display: flex;
     gap: 10px;
-    z-index: 10;
 }
 
 .indicator {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255,255,255,0.3);
     cursor: pointer;
-    transition: all var(--transition-speed);
+    transition: background-color 0.3s;
 }
 
 .indicator.active {
-    background-color: var(--color-primary);
-    transform: scale(1.2);
+    background-color: var(--primary-yellow);
 }
 
-.hero-description {
-    background-color: var(--color-white);
+.prev-slide, .next-slide {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.hero-info {
+    background-color: var(--bg-light);
     padding: 40px;
     border-radius: 8px;
-    border-left: 4px solid var(--color-primary);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color var(--transition-speed);
+    border-left: 4px solid var(--primary-yellow);
+    box-shadow: var(--shadow);
 }
 
-.hero-description h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
-    color: var(--color-black);
+.features-list {
+    list-style: none;
+    margin-top: 20px;
 }
 
-.hero-description p {
-    font-size: 16px;
-    color: var(--color-gray);
-    margin-bottom: 30px;
+.features-list li {
+    margin-bottom: 10px;
+    color: var(--text-dark);
 }
 
-/* ========================================
-   О компании (About)
-   ======================================== */
-.about {
+/* About Section */
+.about-section {
     padding: 80px 0;
-    background-color: var(--color-black);
-    color: var(--color-white);
-    text-align: center;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
-.about h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    color: var(--color-primary);
+    background-color: var(--bg-light);
 }
 
 .about-content {
     max-width: 800px;
     margin: 0 auto;
-    font-size: 18px;
-    line-height: 1.8;
+    text-align: center;
 }
 
-.about-content p {
-    margin-bottom: 20px;
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
 }
 
-/* ========================================
-   Подвал (Footer)
-   ======================================== */
+.stat-number {
+    display: block;
+    font-size: 36px;
+    font-weight: bold;
+    color: #D4B200;
+}
+
+body.dark-theme .stat-number {
+    color: var(--primary-yellow);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-dark);
+    opacity: 0.8;
+}
+
+/* Footer */
 .main-footer {
-    background-color: var(--color-gray-light);
-    padding: 60px 0 30px;
-    border-top: 4px solid var(--color-primary);
-    transition: background-color var(--transition-speed);
+    background-color: #1A1A1A;
+    color: #CCCCCC;
+    padding: 60px 0 20px;
 }
 
-.footer-content {
+.footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 40px;
     margin-bottom: 40px;
 }
 
-.footer-column h4 {
-    font-size: 18px;
+.footer-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--primary-yellow);
+}
+
+.footer-col h4 {
+    color: var(--text-light);
     margin-bottom: 20px;
-    color: var(--color-black);
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--primary-yellow);
     padding-bottom: 10px;
     display: inline-block;
 }
 
-.footer-logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--color-black);
-    margin-bottom: 10px;
-}
-
-.footer-logo span {
-    color: var(--color-primary);
-}
-
-.footer-subtitle {
-    font-size: 14px;
-    color: var(--color-gray);
+.footer-links {
+    list-style: none;
 }
 
 .footer-links li {
@@ -384,74 +341,52 @@ button {
 }
 
 .footer-links a {
-    color: var(--color-gray);
-    transition: color var(--transition-speed);
+    color: #CCCCCC;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
 .footer-links a:hover {
-    color: var(--color-primary);
+    color: var(--primary-yellow);
 }
 
-.address,
-.hours,
-.contact-phone {
-    color: var(--color-gray);
-    font-size: 14px;
-    line-height: 1.8;
-}
-
-.contact-phone a:hover {
-    color: var(--color-primary);
-}
-
-.footer-bottom {
+.copyright {
     text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid var(--color-border);
-    color: var(--color-gray);
+    padding-top: 20px;
+    border-top: 1px solid #333;
     font-size: 14px;
+    color: #666;
 }
 
-/* ========================================
-   Адаптивность
-   ======================================== */
+/* Responsive */
 @media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .hero-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
     .top-bar .container {
         flex-direction: column;
         gap: 10px;
         text-align: center;
     }
-
-    .top-bar-left,
-    .top-bar-right {
-        justify-content: center;
-    }
-
-    .header-content {
+    
+    .top-links {
         flex-direction: column;
-        gap: 20px;
-    }
-
-    .main-nav ul {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .hero-content {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .logo {
-        font-size: 24px;
-    }
-
-    .hero-description h2 {
-        font-size: 24px;
+        gap: 5px;
     }
 }
