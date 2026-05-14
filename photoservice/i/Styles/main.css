@@ -919,3 +919,457 @@ body.dark-theme .term-card p {
         gap: 5px;
     }
 }
+
+/* ========================================
+   Стили для страницы "Каталог услуг"
+   ======================================== */
+
+.page-title {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--primary-dark);
+}
+
+body.dark-theme .page-title {
+    color: var(--primary-yellow);
+}
+
+/* Фильтры */
+.filters-section {
+    background-color: var(--bg-gray);
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    border-left: 4px solid var(--primary-yellow);
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+}
+
+body.dark-theme .section-title {
+    color: var(--primary-yellow);
+}
+
+.filters-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.filter-group select {
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-size: 14px;
+    min-width: 200px;
+    cursor: pointer;
+}
+
+.filter-group select:focus {
+    outline: 2px solid var(--primary-yellow);
+    border-color: var(--primary-yellow);
+}
+
+/* Каталог услуг */
+.catalog-section {
+    padding: 20px 0;
+}
+
+.no-services {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    padding: 40px;
+    background-color: var(--bg-gray);
+    border-radius: 8px;
+}
+
+body.dark-theme .no-services {
+    color: #aaa;
+}
+
+.services-grid {
+    display: grid;
+    gap: 30px;
+}
+
+/* Карточка услуги */
+.service-card {
+    background-color: var(--bg-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 250px 1fr 280px;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Левый блок карточки */
+.service-left {
+    background-color: var(--bg-gray);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-right: 1px solid var(--border-color);
+}
+
+.service-type {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background-color: var(--primary-yellow);
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: var(--primary-dark);
+}
+
+.service-photo {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
+
+.btn-order {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--primary-yellow);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-order:hover {
+    background-color: #E5C100;
+    transform: scale(1.05);
+}
+
+/* Центральный блок карточки */
+.service-center {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.service-title {
+    font-size: 22px;
+    color: var(--primary-dark);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+body.dark-theme .service-title {
+    color: var(--primary-yellow);
+}
+
+.service-description {
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Правый блок карточки */
+.service-right {
+    padding: 20px;
+    background-color: var(--bg-gray);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+body.dark-theme .info-label {
+    color: #aaa;
+}
+
+.info-value {
+    color: var(--text-dark);
+    text-align: right;
+    flex-grow: 1;
+}
+
+.price-item {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid var(--primary-yellow);
+}
+
+.price-item .info-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+body.dark-theme .price-item .info-value {
+    color: var(--primary-yellow);
+}
+
+.price {
+    color: var(--primary-dark) !important;
+}
+
+body.dark-theme .price {
+    color: var(--primary-yellow) !important;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: var(--bg-light);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    border-top: 4px solid var(--primary-yellow);
+    position: relative;
+    animation: slideDown 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--primary-dark);
+}
+
+body.dark-theme .close-modal:hover {
+    color: var(--primary-yellow);
+}
+
+.modal-content h2 {
+    margin-bottom: 25px;
+    color: var(--primary-dark);
+    font-size: 24px;
+}
+
+body.dark-theme .modal-content h2 {
+    color: var(--primary-yellow);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.form-group input:focus {
+    outline: 2px solid var(--primary-yellow);
+    border-color: var(--primary-yellow);
+}
+
+.form-group input[readonly] {
+    background-color: var(--bg-gray);
+    cursor: not-allowed;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary-yellow);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-submit:hover {
+    background-color: #E5C100;
+    transform: scale(1.02);
+}
+
+/* Responsive для каталога */
+@media (max-width: 992px) {
+    .service-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    
+    .service-left {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .service-photo {
+        width: 150px;
+        aspect-ratio: 1;
+    }
+    
+    .service-right {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .info-item {
+        justify-content: flex-start;
+        gap: 20px;
+    }
+    
+    .info-label {
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 28px;
+    }
+    
+    .filters-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group select {
+        width: 100%;
+    }
+    
+    .service-left {
+        flex-direction: column;
+    }
+    
+    .service-photo {
+        width: 100%;
+    }
+    
+    .btn-order {
+        width: 100%;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .info-value {
+        text-align: left;
+    }
+    
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px;
+    }
+}

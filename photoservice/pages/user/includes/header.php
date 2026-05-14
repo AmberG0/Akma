@@ -18,7 +18,6 @@ $assets_path = '../../i/';
             <div class="top-links">
                 <a href="about.php">О нас</a>
                 <a href="policy.php">Наша политика</a>
-                <a href="#">Информация для заказчиков</a>
                 <button id="theme-toggle" class="theme-btn">🌙 Темная тема</button>
             </div>
             <div class="city-selector">
@@ -39,7 +38,7 @@ $assets_path = '../../i/';
             <a href="main.php" class="logo">Строй<span>Сервис</span></a>
             
             <nav class="main-nav">
-                <a href="#">Каталог</a>
+                <a href="catalog.php">Каталог</a>
                 <a href="#">Наши объекты</a>
                 <a href="cart.php" class="cart-btn">Подбор услуг</a>
             </nav>
