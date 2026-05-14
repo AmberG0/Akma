@@ -1,0 +1,74 @@
+/* ========================================
+   Основные стили (main.css)
+   Цвета: желтый, белый, черный
+   ======================================== */
+
+:root {
+    --color-yellow: #FFD700;
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-gray-light: #d0d0d0;
+    --color-gray-dark: #a0a0a0;
+    
+    --font-main: Arial, sans-serif;
+    --border-width: 2px;
+}
+
+/* Темная тема */
+body.dark-theme {
+    --color-white: #1a1a1a;
+    --color-black: #f0f0f0;
+    --color-gray-light: #2a2a2a;
+    --color-gray-dark: #404040;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-gray-light);
+    color: var(--color-black);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: var(--border-width) solid var(--color-black);
+    background-color: transparent;
+    color: var(--color-black);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--color-yellow);
+    border-color: var(--color-black);
+    color: var(--color-black);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-black);
+    color: var(--color-yellow);
+}
+
+/* Контейнеры */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
