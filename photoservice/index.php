@@ -1,5 +1,8 @@
 <?php
-session_start();
-// Перенаправление на главную страницу пользователя
-header('Location: pages/user/main.php');
+/**
+ * Точка входа в приложение
+ * Перенаправляет на главную страницу
+ */
+
+header('Location: /photoservice/pages/user/main.php');
 exit;

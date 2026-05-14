@@ -1,19 +1,45 @@
 /* ========================================
-   ОСНОВНЫЕ СТИЛИ
+   Основные стили - ИП Барбарян К.А.
+   Специальность 09.02.07
    Цвета: желтый (#FFD700), белый (#FFFFFF), черный (#1A1A1A)
    ======================================== */
 
+/* Обнуление и базовые настройки */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --color-primary: #FFD700;
+    --color-primary-dark: #E5C100;
+    --color-black: #1A1A1A;
+    --color-white: #FFFFFF;
+    --color-gray-light: #f5f5f5;
+    --color-gray: #666666;
+    --color-border: #dddddd;
+    --font-main: 'Arial', sans-serif;
+    --transition-speed: 0.3s;
+}
+
+/* Темная тема */
+body.dark-theme {
+    --color-black: #FFFFFF;
+    --color-white: #1A1A1A;
+    --color-gray-light: #2a2a2a;
+    --color-gray: #cccccc;
+    --color-border: #444444;
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #FFFFFF;
-    color: #1A1A1A;
+    font-family: var(--font-main);
+    background-color: var(--color-white);
+    color: var(--color-black);
     line-height: 1.6;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 .container {
@@ -25,19 +51,24 @@ body {
 a {
     text-decoration: none;
     color: inherit;
+    transition: color var(--transition-speed);
 }
 
 ul {
     list-style: none;
 }
 
-/* ========================================
-   TOP BAR (ВЕРХНЯЯ ПОЛОСА)
-   ======================================== */
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
 
+/* ========================================
+   Верхняя панель (Top Bar)
+   ======================================== */
 .top-bar {
-    background-color: #1A1A1A;
-    color: #FFFFFF;
+    background-color: var(--color-black);
+    color: var(--color-white);
     padding: 8px 0;
     font-size: 12px;
 }
@@ -48,38 +79,60 @@ ul {
     align-items: center;
 }
 
-.top-links {
+.top-bar-left,
+.top-bar-right {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 10px;
 }
 
-.top-links a {
-    color: #FFFFFF;
-    transition: color 0.3s;
+.top-link {
+    color: var(--color-white);
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    transition: color var(--transition-speed);
 }
 
-.top-links a:hover {
-    color: #FFD700;
+.top-link:hover {
+    color: var(--color-primary);
 }
 
-#theme-toggle {
-    color: #FFD700;
-    cursor: pointer;
+.top-separator {
+    color: var(--color-gray);
 }
 
-.city-selector {
-    color: #FFFFFF;
-    cursor: pointer;
+.theme-btn {
+    color: var(--color-primary);
+}
+
+.city-btn {
+    background: none;
+    border: 1px solid var(--color-gray);
+    color: var(--color-white);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: all var(--transition-speed);
+}
+
+.city-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 /* ========================================
-   HEADER (ШАПКА)
+   Шапка (Header)
    ======================================== */
-
-header {
-    background-color: #FFFFFF;
+.main-header {
+    background-color: var(--color-white);
     padding: 20px 0;
-    border-bottom: 2px solid #FFD700;
+    border-bottom: 2px solid var(--color-primary);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color var(--transition-speed);
 }
 
 .header-content {
@@ -89,64 +142,93 @@ header {
     gap: 20px;
 }
 
-.admin-link {
-    color: #FFD700;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s;
+.header-left {
+    min-width: 100px;
 }
 
-.admin-link:hover {
-    color: #E5C100;
+.admin-btn {
+    font-size: 12px;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: transparent;
+    transition: all var(--transition-speed);
+}
+
+.admin-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-black);
 }
 
 .logo {
     font-size: 28px;
     font-weight: bold;
-    color: #1A1A1A;
+    color: var(--color-black);
 }
 
 .logo span {
-    color: #FFD700;
+    color: var(--color-primary);
 }
 
-nav ul {
+.main-nav ul {
     display: flex;
     gap: 30px;
 }
 
-nav a {
-    color: #1A1A1A;
+.main-nav a {
+    color: var(--color-black);
     font-weight: 500;
-    transition: color 0.3s;
+    padding: 8px 0;
+    position: relative;
 }
 
-nav a:hover {
-    color: #FFD700;
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width var(--transition-speed);
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+.main-nav a:hover {
+    color: var(--color-primary);
+}
+
+.cart-btn {
+    color: var(--color-primary) !important;
 }
 
 .cta-button {
-    background-color: #FFD700;
-    color: #1A1A1A;
+    background-color: var(--color-primary);
+    color: var(--color-black);
     padding: 12px 24px;
     border: none;
     border-radius: 4px;
     font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px;
+    transition: all var(--transition-speed);
 }
 
 .cta-button:hover {
-    background-color: #E5C100;
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
 }
 
 /* ========================================
-   HERO SECTION (БАННЕР)
+   Hero секция
    ======================================== */
-
 .hero {
     padding: 60px 0;
-    background-color: #f9f9f9;
+    background-color: var(--color-gray-light);
+    transition: background-color var(--transition-speed);
 }
 
 .hero-content {
@@ -157,13 +239,13 @@ nav a:hover {
 }
 
 .hero-slider {
-    background-color: #1A1A1A;
+    background-color: var(--color-black);
     height: 400px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+    color: var(--color-white);
     font-size: 48px;
     position: relative;
     overflow: hidden;
@@ -172,12 +254,12 @@ nav a:hover {
 .slider-image {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 
 .slider-image.active {
@@ -189,6 +271,7 @@ nav a:hover {
     bottom: 20px;
     display: flex;
     gap: 10px;
+    z-index: 10;
 }
 
 .indicator {
@@ -197,48 +280,50 @@ nav a:hover {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all var(--transition-speed);
 }
 
 .indicator.active {
-    background-color: #FFD700;
+    background-color: var(--color-primary);
+    transform: scale(1.2);
 }
 
 .hero-description {
-    background-color: #FFFFFF;
+    background-color: var(--color-white);
     padding: 40px;
     border-radius: 8px;
-    border-left: 4px solid #FFD700;
+    border-left: 4px solid var(--color-primary);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition-speed);
 }
 
 .hero-description h2 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #1A1A1A;
+    color: var(--color-black);
 }
 
 .hero-description p {
     font-size: 16px;
-    color: #666;
+    color: var(--color-gray);
     margin-bottom: 30px;
 }
 
 /* ========================================
-   ABOUT SECTION (О КОМПАНИИ)
+   О компании (About)
    ======================================== */
-
 .about {
     padding: 80px 0;
-    background-color: #1A1A1A;
-    color: #FFFFFF;
+    background-color: var(--color-black);
+    color: var(--color-white);
     text-align: center;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 .about h2 {
     font-size: 36px;
     margin-bottom: 40px;
-    color: #FFD700;
+    color: var(--color-primary);
 }
 
 .about-content {
@@ -248,19 +333,23 @@ nav a:hover {
     line-height: 1.8;
 }
 
-/* ========================================
-   FOOTER (ПОДВАЛ)
-   ======================================== */
+.about-content p {
+    margin-bottom: 20px;
+}
 
-footer {
-    background-color: #FFFFFF;
+/* ========================================
+   Подвал (Footer)
+   ======================================== */
+.main-footer {
+    background-color: var(--color-gray-light);
     padding: 60px 0 30px;
-    border-top: 4px solid #FFD700;
+    border-top: 4px solid var(--color-primary);
+    transition: background-color var(--transition-speed);
 }
 
 .footer-content {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 40px;
     margin-bottom: 40px;
 }
@@ -268,8 +357,8 @@ footer {
 .footer-column h4 {
     font-size: 18px;
     margin-bottom: 20px;
-    color: #1A1A1A;
-    border-bottom: 2px solid #FFD700;
+    color: var(--color-black);
+    border-bottom: 2px solid var(--color-primary);
     padding-bottom: 10px;
     display: inline-block;
 }
@@ -277,11 +366,17 @@ footer {
 .footer-logo {
     font-size: 24px;
     font-weight: bold;
-    color: #1A1A1A;
+    color: var(--color-black);
+    margin-bottom: 10px;
 }
 
 .footer-logo span {
-    color: #FFD700;
+    color: var(--color-primary);
+}
+
+.footer-subtitle {
+    font-size: 14px;
+    color: var(--color-gray);
 }
 
 .footer-links li {
@@ -289,31 +384,55 @@ footer {
 }
 
 .footer-links a {
-    color: #666;
-    transition: color 0.3s;
+    color: var(--color-gray);
+    transition: color var(--transition-speed);
 }
 
 .footer-links a:hover {
-    color: #FFD700;
+    color: var(--color-primary);
 }
 
-.address, .hours {
-    color: #666;
+.address,
+.hours,
+.contact-phone {
+    color: var(--color-gray);
     font-size: 14px;
     line-height: 1.8;
 }
 
-/* ========================================
-   АДАПТИВНОСТЬ
-   ======================================== */
+.contact-phone a:hover {
+    color: var(--color-primary);
+}
 
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-gray);
+    font-size: 14px;
+}
+
+/* ========================================
+   Адаптивность
+   ======================================== */
 @media (max-width: 768px) {
+    .top-bar .container {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .top-bar-left,
+    .top-bar-right {
+        justify-content: center;
+    }
+
     .header-content {
         flex-direction: column;
         gap: 20px;
     }
 
-    nav ul {
+    .main-nav ul {
         flex-direction: column;
         gap: 15px;
         text-align: center;
@@ -328,55 +447,11 @@ footer {
         gap: 30px;
     }
 
-    .top-bar .container {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
+    .logo {
+        font-size: 24px;
     }
 
-    .top-links {
-        flex-direction: column;
-        gap: 10px;
+    .hero-description h2 {
+        font-size: 24px;
     }
-}
-
-/* ========================================
-   ТЕМНАЯ ТЕМА
-   ======================================== */
-
-body.dark-theme {
-    background-color: #1A1A1A;
-    color: #FFFFFF;
-}
-
-body.dark-theme header,
-body.dark-theme footer {
-    background-color: #2c2c2c;
-}
-
-body.dark-theme .hero {
-    background-color: #2c2c2c;
-}
-
-body.dark-theme .hero-description {
-    background-color: #3a3a3a;
-    color: #FFFFFF;
-}
-
-body.dark-theme .hero-description h2 {
-    color: #FFFFFF;
-}
-
-body.dark-theme .hero-description p {
-    color: #cccccc;
-}
-
-body.dark-theme .footer-links a,
-body.dark-theme .address,
-body.dark-theme .hours {
-    color: #cccccc;
-}
-
-body.dark-theme nav a {
-    color: #FFFFFF;
 }
