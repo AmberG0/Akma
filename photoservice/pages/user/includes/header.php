@@ -17,7 +17,7 @@ $assets_path = '../../i/';
         <div class="container">
             <div class="top-links">
                 <a href="about.php">О нас</a>
-                <a href="#">Наша политика</a>
+                <a href="policy.php">Наша политика</a>
                 <a href="#">Информация для заказчиков</a>
                 <button id="theme-toggle" class="theme-btn">🌙 Темная тема</button>
             </div>
@@ -33,8 +33,6 @@ $assets_path = '../../i/';
             <div class="admin-area">
                 <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                     <a href="../../pages/admin/dashboard.php" class="admin-link">Админ панель</a>
-                <?php else: ?>
-                    <a href="#" class="admin-link-hidden">Для сотрудников</a>
                 <?php endif; ?>
             </div>
             

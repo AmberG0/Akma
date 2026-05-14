@@ -1,39 +1,62 @@
-```php
-# Environment and cache files
+```gitignore
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
 .env.local
 .env.*
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
 
-# Dependencies
-node_modules/
-vendor/
-composer.lock
-
-# Build and distribution
-build/
-dist/
-*.phar
-*.so
+# IDE files
+.vscode/
+.idea/
 
 # Logs
 *.log
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# Temporary files
-*.tmp
-*.temp
+# Build outputs
+dist/
+build/
+target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+htmlcov/
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```
