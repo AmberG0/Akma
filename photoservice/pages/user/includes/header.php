@@ -16,7 +16,7 @@ $assets_path = '../../i/';
     <div class="top-bar">
         <div class="container">
             <div class="top-links">
-                <a href="#">О нас</a>
+                <a href="about.php">О нас</a>
                 <a href="#">Наша политика</a>
                 <a href="#">Информация для заказчиков</a>
                 <button id="theme-toggle" class="theme-btn">🌙 Темная тема</button>
