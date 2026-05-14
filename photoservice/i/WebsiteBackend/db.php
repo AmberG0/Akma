@@ -6,7 +6,7 @@
  */
 
 $host = 'localhost';
-$dbname = 'construction_db';
+$dbname = 'construction_site';
 $username = 'root';
 $password = '';
 $charset = 'utf8mb4';

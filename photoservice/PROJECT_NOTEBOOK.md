@@ -167,44 +167,66 @@
 Дата защиты: 07 июня 2026 года
 
 ================================================================================
-10. ТЕКУЩИЙ СТАТУС (на момент последнего сохранения)
+10. ТЕКУЩИЙ СТАТУС И ФАЙЛОВАЯ СТРУКТУРА
 ================================================================================
 Выполнено:
 - [x] Главная страница (index.php, pages/user/main.php)
 - [x] Страница "О компании" (pages/user/about.php)
-- [x] Удалена ссылка "Для сотрудников" из шапки
-- [x] Создана страница "Наша политика" (pages/user/policy.php)
-- [x] Ссылка "Наша политика" в шапке теперь активна
-- [x] Создана страница "Каталог услуг" (pages/user/catalog.php)
-- [x] Создан обработчик add_to_cart.php для добавления услуг в подборку
-- [x] Все стили для каталога добавлены в i/Styles/main.css
-- [x] Ссылка "Каталог" в шапке теперь ведет на catalog.php
+- [x] Страница "Наша политика" (pages/user/policy.php)
+- [x] Страница "Каталог услуг" (pages/user/catalog.php)
+- [x] Обработчик add_to_cart.php для добавления услуг в подборку
+- [x] Страница просмотра подборки (pages/user/cart.php)
+- [x] Форма оформления заявки (checkout.php)
+- [x] Страница успешного заказа (order_success.php)
+- [x] AJAX обновление корзины (update_cart.php)
+- [x] SQL схема базы данных (database.sql)
+- [x] Административная панель - вход (login.php)
+- [x] Административная панель - dashboard (dashboard.php)
+- [x] Выход из админки (logout.php)
+- [x] Все стили добавлены в i/Styles/main.css
 
 Структура проекта:
 /workspace/photoservice/
+├── database.sql                    # SQL схема БД и тестовые данные
+├── index.php                       # Точка входа
+├── PROJECT_NOTEBOOK.md             # Документация проекта
 ├── i/
 │   ├── Scripts/
 │   ├── Styles/
-│   │   └── main.css
+│   │   └── main.css                # Все стили проекта (1579 строк)
 │   └── WebsiteBackend/
-│       └── db.php
-├── index.php
-├── PROJECT_NOTEBOOK.md
+│       └── db.php                  # Подключение к БД (construction_site)
 └── pages/
-    └── user/
-        ├── includes/
-        │   ├── header.php
-        │   └── footer.php
-        ├── main.php
-        ├── about.php
-        ├── policy.php
-        ├── catalog.php
-        └── add_to_cart.php
+    ├── user/
+    │   ├── includes/
+    │   │   ├── header.php          # Шапка сайта
+    │   │   └── footer.php          # Подвал сайта
+    │   ├── main.php                # Главная страница
+    │   ├── about.php               # О компании
+    │   ├── policy.php              # Наша политика
+    │   ├── catalog.php             # Каталог услуг
+    │   ├── cart.php                # Подборка услуг (корзина)
+    │   ├── checkout.php            # Оформление заказа
+    │   ├── order_success.php       # Успешный заказ
+    │   ├── add_to_cart.php         # AJAX добавление в корзину
+    │   └── update_cart.php         # AJAX обновление корзины
+    └── admin/
+        ├── login.php               # Вход для персонала
+        ├── dashboard.php           # Панель управления
+        └── logout.php              # Выход
+
+База данных: construction_site
+Таблицы: Category, Services, Personnel, Services_tab, Orders, Reviews
+Тестовые пользователи:
+- admin / password (Администратор)
+- manager / password (Менеджер)
 
 Следующие шаги:
-1. Создание страницы просмотра подборки (cart.php)
-2. Форма оформления заявки и сохранение в БД
-3. Административная панель
+1. Создание страниц управления заявками (orders.php, order_view.php)
+2. CRUD для услуг (services.php)
+3. Управление персоналом (personnel.php) - только для админа
+4. Система отзывов
+5. Тестирование функционала
 
 ================================================================================
 ИНСТРУКЦИЯ ДЛЯ ИИ-ПОМОЩНИКА
