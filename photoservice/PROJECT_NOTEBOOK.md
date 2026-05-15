@@ -184,6 +184,11 @@
 - [x] Административная панель - dashboard (dashboard.php)
 - [x] Выход из админки (logout.php)
 - [x] Все стили добавлены в i/Styles/main.css
+- [x] Управление заявками (orders.php, order_view.php)
+- [x] CRUD для услуг (services.php)
+- [x] CRUD для категорий (categories.php)
+- [x] Управление персоналом (personnel.php) - только для админа
+- [x] Карточка услуги для пользователя (service_detail.php)
 
 Структура проекта:
 /workspace/photoservice/
@@ -208,11 +213,17 @@
     │   ├── cart.php                # Подборка услуг (корзина)
     │   ├── checkout.php            # Оформление заказа
     │   ├── order_success.php       # Успешный заказ
+    │   ├── service_detail.php      # Детальная страница услуги
     │   ├── add_to_cart.php         # AJAX добавление в корзину
     │   └── update_cart.php         # AJAX обновление корзины
     └── admin/
         ├── login.php               # Вход для персонала
         ├── dashboard.php           # Панель управления
+        ├── orders.php              # Список заявок
+        ├── order_view.php          # Просмотр заявки
+        ├── services.php            # Управление услугами
+        ├── categories.php          # Управление категориями
+        ├── personnel.php           # Управление персоналом (admin only)
         └── logout.php              # Выход
 
 База данных: construction_site
@@ -222,11 +233,9 @@
 - manager / password (Менеджер)
 
 Следующие шаги:
-1. Создание страниц управления заявками (orders.php, order_view.php)
-2. CRUD для услуг (services.php)
-3. Управление персоналом (personnel.php) - только для админа
-4. Система отзывов
-5. Тестирование функционала
+1. Система отзывов
+2. Тестирование функционала
+3. Документация
 
 ================================================================================
 ИСТОРИЯ ИЗМЕНЕНИЙ
