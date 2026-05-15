@@ -1,92 +1,119 @@
-# Исправления проекта "Строй сервис"
+# 🛠️ Исправления и обновления проекта "Строй сервис"
 
-## ✅ Выполненные исправления:
+## ✅ Выполненные исправления (15.05.2024)
 
-### 1. Папка для загрузки фото услуг
-- **Создана папка:** `/workspace/photoservice/uploads/services/`
-- **Права доступа:** 777 (чтение/запись для всех)
-- **Логика загрузки:** Обновлена в `pages/admin/services.php`
-  - Путь к загрузке: `../../uploads/services/` (относительно корня сайта)
-  - Сохранение в БД: `uploads/services/filename.jpg`
-  - Проверка типов: JPEG, PNG, GIF, WebP
-  - Максимальный размер: 5MB
+### 1. Загрузка фотографий услуг
+**Файл:** `pages/admin/services.php`
 
-### 2. Изменение статусов заявок
-- **Файл:** `pages/admin/orders.php`
-  - Добавлена форма смены статуса прямо в таблице
-  - Обработка POST-запроса с валидацией статуса
-  - Статусы: "новая", "в работе", "выполнена", "отменена"
-  
-- **Файл:** `pages/admin/order_view.php`
-  - Исправлена обработка изменения статуса
-  - Добавлен редирект после успешного обновления
-  - Вывод сообщения об успехе/ошибке
+**Изменения:**
+- Упрощена логика загрузки фото (только проверка расширения)
+- Фото сохраняются в папку `/workspace/photoservice/uploads/`
+- Имя файла: `serv_timestamp_random.ext`
+- В БД сохраняется только имя файла (без пути)
+- При отображении путь формируется как `../../uploads/{имя_файла}`
 
-### 3. Форма оплаты картой
-- **Файл:** `pages/user/cart.php`
-  - Компактная форма ввода данных карты
-  - Классы: `card-inputs-compact`, `form-group-compact`
-  - Сетка: 2 колонки для срока и CVV
-  - Уменьшенные размеры полей
+**Обновленные файлы для отображения фото:**
+- `pages/admin/services.php` - добавлена колонка "Фото" в таблицу
+- `pages/user/catalog.php` - исправлен путь к фото
+- `pages/user/service_detail.php` - исправлен путь к фото (основное и похожие услуги)
 
-### 4. Стили админ-панели
-- **Файл:** `i/Styles/main.css`
-  - Все стили для админки в одном файле
-  - Шаблоны: `admin_header.php`, `admin_footer.php`
-  - Выделение новых заявок (жёлтый фон + пульсация)
-  - Выделение заявок без менеджера (красный фон)
-
-## 📋 SQL для обновления БД:
-
-Выполните файл `update_status_fixed.sql` для добавления поля Status:
-
-```sql
-ALTER TABLE Orders
-ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Type_pay;
-
-UPDATE Orders SET Status = 'новая' WHERE Status IS NULL;
-```
-
-## 🔧 Проверка работы:
-
-1. **Загрузка фото:**
-   - Зайдите в админку → Услуги → Добавить услугу
-   - Выберите файл изображения
-   - После сохранения фото должно появиться в `uploads/services/`
-
-2. **Изменение статуса:**
-   - Зайдите в админку → Заявки
-   - В таблице заявок выберите новый статус в выпадающем списке
-   - Страница перезагрузится с сообщением об успехе
-
-3. **Оплата картой:**
-   - Добавьте услугу в корзину
-   - Перейдите на страницу оформления
-   - Заполните данные карты (форма компактная)
-
-## 📁 Структура проекта:
-
+**Структура хранения:**
 ```
 /workspace/photoservice/
-├── uploads/services/           ← Папка для фото услуг
-├── update_status_fixed.sql     ← SQL для поля Status
-├── database.sql                ← Полная схема БД (со Status)
+├── uploads/              ← Папка для всех загрузок
+│   └── serv_1234567890_1234.jpg
 ├── pages/
-│   ├── user/
-│   │   └── cart.php            ← Форма оплаты картой
-│   └── admin/
-│       ├── orders.php          ← Смена статусов
-│       ├── order_view.php      ← Просмотр заявки
-│       ├── services.php        ← Загрузка фото
-│       └── includes/
-│           ├── admin_header.php
-│           └── admin_footer.php
-└── i/Styles/
-    └── main.css                ← Все стили (2700+ строк)
+│   ├── admin/services.php
+│   └── user/
+│       ├── catalog.php
+│       └── service_detail.php
 ```
 
-## ⚠️ Важно:
+### 2. Статусы заявок
+**Файлы:** `pages/admin/orders.php`, `pages/admin/order_view.php`
 
-- Убедитесь, что поле `Status` существует в таблице `Orders`
-- Проверьте права на запись в папку `uploads/services/`
-- Все стили находятся в `main.css`, inline-стили минимизированы
+**Реализованные статусы:**
+- 🆕 Новая
+- 🔄 В работе
+- ✅ Выполнена
+- ❌ Отменена
+
+**Функционал:**
+- Изменение статуса в общем списке заявок (выпадающий список)
+- Изменение статуса в детальной странице заявки
+- Автоматическое присвоение статуса "в работе" при назначении менеджера
+- Цветовая индикация статусов
+
+### 3. SQL файлы для обновления БД
+
+**file:** `update_status_fixed.sql`
+```sql
+ALTER TABLE Orders ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Type_pay;
+UPDATE Orders SET Status = 'новая' WHERE Status IS NULL OR Status = '';
+```
+
+**file:** `reviews_table.sql`
+```sql
+CREATE TABLE IF NOT EXISTS Reviews (
+    ID_review INT AUTO_INCREMENT PRIMARY KEY,
+    Client_name VARCHAR(255) NOT NULL,
+    Review_text TEXT NOT NULL,
+    Rating INT NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
+    Date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Is_published ENUM('да', 'Нет') DEFAULT 'Нет'
+) ENGINE=InnoDB;
+```
+
+## 📋 Инструкция по установке
+
+### 1. Обновление базы данных
+```bash
+mysql -u root -p construction_site < /workspace/photoservice/update_status_fixed.sql
+mysql -u root -p construction_site < /workspace/photoservice/reviews_table.sql
+```
+
+### 2. Проверка прав на папку uploads
+```bash
+chmod 777 /workspace/photoservice/uploads
+```
+
+### 3. Тестирование загрузки фото
+1. Войти в админку: `/photoservice/pages/admin/login.php`
+2. Логин: `admin`, Пароль: `password`
+3. Перейти в "Услуги" → "Добавить услугу"
+4. Загрузить изображение (JPG, PNG, GIF, WebP)
+5. Проверить появление фото в таблице услуг
+
+## 🔧 Технические детали
+
+### Логика загрузки фото (services.php)
+```php
+$upload_dir = __DIR__ . '/../../uploads/';
+$allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+$extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+$new_filename = 'serv_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
+move_uploaded_file($file_tmp, $upload_dir . $new_filename);
+$photo = $new_filename; // Сохраняем только имя в БД
+```
+
+### Отображение фото (catalog.php, service_detail.php)
+```php
+<?php if (!empty($service['Photo']) && file_exists('../../uploads/' . $service['Photo'])): ?>
+    <img src="../../uploads/<?= htmlspecialchars($service['Photo']) ?>" alt="...">
+<?php else: ?>
+    <div class="photo-placeholder">Нет фото</div>
+<?php endif; ?>
+```
+
+## ⚠️ Важные замечания
+
+1. **Папка uploads** должна существовать и иметь права на запись
+2. **Максимальный размер файла** не ограничен (можно добавить проверку при необходимости)
+3. **Проверка типа файла** осуществляется по расширению (не по MIME-типу)
+4. **Старые фото** не удаляются автоматически при загрузке новых (можно добавить функционал)
+
+## 📞 Контакты
+
+Студент: Арыков Антон Андреевич  
+Руководитель ВКР: Тугушев Динислям Умярович  
+Дата защиты: 07 июня 2026 года
