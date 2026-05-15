@@ -21,7 +21,8 @@ $client_phone = isset($_POST['client_phone']) ? trim($_POST['client_phone']) : '
 $client_email = isset($_POST['client_email']) ? trim($_POST['client_email']) : '';
 $client_address = isset($_POST['client_address']) ? trim($_POST['client_address']) : '';
 $desired_date = isset($_POST['desired_date']) && !empty($_POST['desired_date']) ? $_POST['desired_date'] : null;
-$payment_type = isset($_POST['payment_type']) ? $_POST['payment_type'] : 'cash';
+$payment_type = 'card'; // Только оплата картой
+$privacy_consent = isset($_POST['privacy_consent']) ? true : false;
 $comments = isset($_POST['comments']) ? trim($_POST['comments']) : '';
 
 // Валидация обязательных полей
@@ -34,6 +35,9 @@ if (empty($client_phone)) {
 }
 if (empty($client_email)) {
     $errors[] = 'Необходимо указать email';
+}
+if (!$privacy_consent) {
+    $errors[] = 'Необходимо согласие на обработку персональных данных';
 }
 
 if (!empty($errors)) {

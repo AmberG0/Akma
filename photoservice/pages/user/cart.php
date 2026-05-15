@@ -107,11 +107,10 @@ $client_address = isset($_SESSION['client']['address']) ? $_SESSION['client']['a
                     
                     <div class="form-group">
                         <label for="payment_type">Способ оплаты</label>
-                        <select id="payment_type" name="payment_type">
-                            <option value="cash">Наличные</option>
-                            <option value="card">Банковская карта</option>
-                            <option value="invoice">Безналичный расчет</option>
+                        <select id="payment_type" name="payment_type" disabled>
+                            <option value="card" selected>Банковская карта (онлайн)</option>
                         </select>
+                        <small style="color: #666; display: block; margin-top: 5px;">В настоящее время доступна только оплата банковской картой</small>
                     </div>
                 </div>
                 
@@ -120,8 +119,15 @@ $client_address = isset($_SESSION['client']['address']) ? $_SESSION['client']['a
                     <textarea id="comments" name="comments" rows="4" placeholder="Дополнительная информация..."></textarea>
                 </div>
                 
+                <div class="form-group privacy-consent">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="privacy_consent" name="privacy_consent" required>
+                        <span>Я согласен на <a href="policy.php" target="_blank" class="privacy-link">обработку персональных данных</a> *</span>
+                    </label>
+                </div>
+                
                 <div class="form-submit">
-                    <button type="submit" class="btn-submit-order">Оформить заявку</button>
+                    <button type="submit" class="btn-submit-order">Оплатить и оформить заявку</button>
                 </div>
             </form>
         </section>
