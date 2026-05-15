@@ -83,7 +83,7 @@ try {
 }
 
 $page_title = "Управление заявками";
-include 'includes/admin_header.php';
+require_once __DIR__ . '/includes/admin_header.php';
 ?>
 
 <!-- Фильтры -->
@@ -249,4 +249,4 @@ include 'includes/admin_header.php';
     }
 </script>
 
-<?php include 'includes/admin_footer.php'; ?>
+<?php require_once __DIR__ . '/includes/admin_footer.php'; ?>

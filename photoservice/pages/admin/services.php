@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
     // Обработка загрузки фото
     $photo = '';
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        // Путь относительно корня сайта (для локального сервера)
-        $upload_dir = '../../uploads/services/';
+        // Абсолютный путь к папке загрузки (относительно этого файла)
+        $upload_dir = __DIR__ . '/../../uploads/services/';
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         $file_type = $_FILES['photo']['type'];
         $file_size = $_FILES['photo']['size'];
@@ -72,10 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
             if (move_uploaded_file($file_tmp, $upload_path)) {
                 // Сохраняем путь относительно корня сайта для БД и отображения
                 $photo = 'uploads/services/' . $new_filename;
+                $message = 'Фото успешно загружено: ' . $photo;
+                $message_type = 'success';
             } else {
-                $message = 'Ошибка при загрузке файла. Проверьте права доступа к папке uploads/services/';
+                $message = 'Ошибка при загрузке файла. Проверьте права доступа к папке: ' . $upload_dir;
                 $message_type = 'error';
                 error_log('Не удалось переместить файл из ' . $file_tmp . ' в ' . $upload_path);
+                error_log('Права на папку: ' . substr(sprintf('%o', fileperms($upload_dir)), -4));
             }
         }
     } elseif ($service_id) {
