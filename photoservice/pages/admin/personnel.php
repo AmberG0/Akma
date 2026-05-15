@@ -3,13 +3,20 @@ session_start();
 require_once '../../i/WebsiteBackend/db.php';
 
 // Проверка авторизации и прав администратора
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     header('Location: login.php');
+    exit;
+}
+
+// Проверка прав администратора
+if ($_SESSION['role'] !== 'admin') {
+    header('Location: dashboard.php');
     exit;
 }
 
 $role = $_SESSION['role'];
 $user_fio = $_SESSION['fio'];
+$user_id = $_SESSION['user_id'];
 $message = '';
 $message_type = '';
 
@@ -46,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $id = (int)$_POST['id'];
                     // Проверка, не редактирует ли админ сам себя
-                    if ($id == $_SESSION['user_id'] && $role_user !== 'admin') {
+                    if ($id == $user_id && $role_user !== 'admin') {
                         $message = 'Нельзя изменить свою роль';
                         $message_type = 'error';
                     } else {
@@ -72,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int)$_POST['id'];
         
         // Нельзя удалить самого себя
-        if ($id == $_SESSION['user_id']) {
+        if ($id == $user_id) {
             $message = 'Нельзя удалить свою учетную запись';
             $message_type = 'error';
         } else {
@@ -424,7 +431,7 @@ $page_title = "Управление персоналом";
                             <td><?= htmlspecialchars($user['Mail'] ?? '—') ?></td>
                             <td class="actions">
                                 <a href="?edit=<?= $user['ID_personal'] ?>" class="btn btn-success" style="padding: 5px 10px;">✏️</a>
-                                <?php if ($user['ID_personal'] != $_SESSION['user_id']): ?>
+                                <?php if ($user['ID_personal'] != $user_id): ?>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить пользователя?')">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= $user['ID_personal'] ?>">
