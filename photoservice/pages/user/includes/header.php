@@ -39,7 +39,7 @@ $assets_path = '../../i/';
             
             <nav class="main-nav">
                 <a href="catalog.php">Каталог</a>
-                <a href="#">Наши объекты</a>
+                <a href="works.php">Наши работы</a>
                 <a href="cart.php" class="cart-btn">Подбор услуг</a>
             </nav>
             

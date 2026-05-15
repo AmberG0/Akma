@@ -380,6 +380,7 @@ $page_title = "Управление персоналом";
                 <li><a href="services.php">🛠️ Услуги</a></li>
                 <li><a href="categories.php">📁 Категории</a></li>
                 <li><a href="personnel.php" class="active">👥 Персонал</a></li>
+                <li><a href="reviews.php">⭐ Отзывы</a></li>
                 <li><a href="../../index.php">🏠 На сайт</a></li>
                 <li><a href="logout.php" class="logout">Выйти</a></li>
             </ul>
