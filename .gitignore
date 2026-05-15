@@ -1,37 +1,30 @@
-```
+```gitignore
 # Compiled and build artifacts
 *.pyc
 __pycache__/
 
 # Dependencies
+node_modules/
 venv/
 .venv/
-node_modules/
+.env
+.env.local
+*.env.*
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
 
-# Environment
-.env
-.env.local
-*.env.*
-
 # Editors
 .vscode/
 .idea/
 
-# OS generated files
+# OS specific
 .DS_Store
 Thumbs.db
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# Build directories
+# Distribution and build directories
 dist/
 build/
 target/
