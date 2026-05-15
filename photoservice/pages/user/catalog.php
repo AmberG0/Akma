@@ -11,27 +11,52 @@ try {
     $categories = [];
 }
 
-// Получение услуг (с фильтрацией по категории, если выбрана)
-$services = [];
+// Параметры поиска и сортировки
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+$sort_by = isset($_GET['sort']) ? $_GET['sort'] : 'name';
 $filter_category = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 
+// Построение SQL запроса
+$sql = "SELECT s.*, c.Name as category_name 
+        FROM Services s 
+        LEFT JOIN Category c ON s.Category = c.ID_category 
+        WHERE s.Relevance = 'да'";
+
+$params = [];
+
+// Поиск по названию или описанию
+if (!empty($search_query)) {
+    $sql .= " AND (s.Name LIKE ? OR s.Description LIKE ?)";
+    $params[] = "%$search_query%";
+    $params[] = "%$search_query%";
+}
+
+// Фильтр по категории
+if ($filter_category > 0) {
+    $sql .= " AND s.Category = ?";
+    $params[] = $filter_category;
+}
+
+// Сортировка
+switch ($sort_by) {
+    case 'price_asc':
+        $sql .= " ORDER BY s.Price ASC";
+        break;
+    case 'price_desc':
+        $sql .= " ORDER BY s.Price DESC";
+        break;
+    case 'name':
+    default:
+        $sql .= " ORDER BY s.Name";
+        break;
+}
+
 try {
-    if ($filter_category > 0) {
-        $stmt = $pdo->prepare("SELECT s.*, c.Name as category_name 
-                               FROM Services s 
-                               LEFT JOIN Category c ON s.Category = c.ID_category 
-                               WHERE s.Relevance = 'да' AND s.Category = ? 
-                               ORDER BY s.Name");
-        $stmt->execute([$filter_category]);
-    } else {
-        $stmt = $pdo->query("SELECT s.*, c.Name as category_name 
-                             FROM Services s 
-                             LEFT JOIN Category c ON s.Category = c.ID_category 
-                             WHERE s.Relevance = 'да' 
-                             ORDER BY s.Name");
-    }
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
+    error_log('Ошибка при загрузке услуг: ' . $e->getMessage());
     $services = [];
 }
 
@@ -42,22 +67,43 @@ include 'includes/header.php';
 <div class="container">
     <h1 class="page-title">Каталог услуг</h1>
 
-    <!-- Фильтры -->
+    <!-- Фильтры и поиск -->
     <section class="filters-section">
-        <h2 class="section-title">Фильтры</h2>
-        <form method="GET" action="" class="filters-form">
-            <div class="filter-group">
-                <label for="category">Категория:</label>
-                <select name="category" id="category" onchange="this.form.submit()">
-                    <option value="0">Все категории</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['ID_category'] ?>" <?= $filter_category == $cat['ID_category'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($cat['Name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </form>
+        <div class="filters-wrapper">
+            <form method="GET" action="" class="filters-form">
+                <div class="filter-group">
+                    <label for="search">Поиск:</label>
+                    <input type="text" name="search" id="search" placeholder="Название или описание..." value="<?= htmlspecialchars($search_query) ?>">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="category">Категория:</label>
+                    <select name="category" id="category" onchange="this.form.submit()">
+                        <option value="0">Все категории</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['ID_category'] ?>" <?= $filter_category == $cat['ID_category'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat['Name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sort">Сортировка:</label>
+                    <select name="sort" id="sort" onchange="this.form.submit()">
+                        <option value="name" <?= $sort_by == 'name' ? 'selected' : '' ?>>По названию</option>
+                        <option value="price_asc" <?= $sort_by == 'price_asc' ? 'selected' : '' ?>>Цена: по возрастанию</option>
+                        <option value="price_desc" <?= $sort_by == 'price_desc' ? 'selected' : '' ?>>Цена: по убыванию</option>
+                    </select>
+                </div>
+                
+                <?php if (!empty($search_query) || $filter_category > 0 || $sort_by !== 'name'): ?>
+                    <div class="filter-group">
+                        <a href="catalog.php" class="btn-reset">✕ Сбросить</a>
+                    </div>
+                <?php endif; ?>
+            </form>
+        </div>
     </section>
 
     <!-- Каталог услуг -->

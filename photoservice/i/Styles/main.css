@@ -944,6 +944,10 @@ body.dark-theme .page-title {
     border-left: 4px solid var(--primary-yellow);
 }
 
+.filters-wrapper {
+    width: 100%;
+}
+
 .section-title {
     font-size: 24px;
     margin-bottom: 20px;
@@ -972,7 +976,8 @@ body.dark-theme .section-title {
     color: var(--text-dark);
 }
 
-.filter-group select {
+.filter-group select,
+.filter-group input[type="text"] {
     padding: 10px 15px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -983,9 +988,29 @@ body.dark-theme .section-title {
     cursor: pointer;
 }
 
-.filter-group select:focus {
+.filter-group input[type="text"] {
+    min-width: 250px;
+}
+
+.filter-group select:focus,
+.filter-group input[type="text"]:focus {
     outline: 2px solid var(--primary-yellow);
     border-color: var(--primary-yellow);
+}
+
+.btn-reset {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-reset:hover {
+    background-color: #c82333;
 }
 
 /* Каталог услуг */
@@ -1999,4 +2024,256 @@ body.dark-theme .section-title {
 .status-badge-assigned {
     background-color: #28a745;
     color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Административная панель
+   ========================================================================== */
+.admin-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+    padding: 20px;
+}
+
+.admin-logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.admin-logo span {
+    color: #FFD700;
+}
+
+.admin-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-nav li {
+    margin-bottom: 10px;
+}
+
+.admin-nav a {
+    display: block;
+    padding: 12px 15px;
+    color: #CCCCCC;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+    background-color: #FFD700;
+    color: #1A1A1A;
+}
+
+.admin-nav a.logout {
+    margin-top: 30px;
+    background-color: #c62828;
+    color: white;
+    text-align: center;
+}
+
+.admin-nav a.logout:hover {
+    background-color: #b71c1c;
+}
+
+.admin-content {
+    padding: 30px;
+    background-color: #F5F5F5;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #FFD700;
+}
+
+.admin-header h1 {
+    color: #1A1A1A;
+    font-size: 28px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-role {
+    background-color: #FFD700;
+    color: #1A1A1A;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.filter-bar {
+    margin-bottom: 20px;
+}
+
+.filter-bar input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-bar input:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.content-section {
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders-table thead {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.orders-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Выделение строк */
+.order-row-new {
+    background-color: #fff3cd !important;
+    border-left: 4px solid #FFD700;
+    animation: pulse-new 2s infinite;
+}
+
+.order-row-no-manager {
+    background-color: #f8d7da !important;
+    border-left: 4px solid #dc3545;
+}
+
+.order-row-normal {
+    background-color: #FFFFFF;
+}
+
+@keyframes pulse-new {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+/* Бейджи статусов */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge-new {
+    background-color: #FFD700;
+    color: #1A1A1A;
+}
+
+.status-badge-no-manager {
+    background-color: #dc3545;
+    color: #FFFFFF;
+}
+
+.status-badge-assigned {
+    background-color: #28a745;
+    color: #FFFFFF;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #FFD700;
+    color: #1A1A1A;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e6c200;
+}
+
+/* Адаптивность для админки */
+@media (max-width: 768px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-sidebar {
+        padding: 15px;
+    }
+    
+    .admin-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .orders-table {
+        font-size: 12px;
+    }
+    
+    .orders-table th,
+    .orders-table td {
+        padding: 8px 10px;
+    }
 }
