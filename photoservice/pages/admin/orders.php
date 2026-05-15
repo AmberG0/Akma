@@ -10,6 +10,47 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
 
 $role = $_SESSION['role'];
 $user_fio = $_SESSION['fio'];
+$user_id = $_SESSION['user_id'];
+
+// Обработка назначения менеджера на заявку
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'assign_manager' && isset($_POST['order_id'], $_POST['manager_id'])) {
+        $order_id = (int)$_POST['order_id'];
+        $manager_id = (int)$_POST['manager_id'];
+        
+        try {
+            $stmt = $pdo->prepare("UPDATE Orders SET Accept_order_Per_ID = ?, Status = 'в работе' WHERE ID_order = ?");
+            $stmt->execute([$manager_id, $order_id]);
+            header('Location: orders.php?msg=Менеджер назначен&type=success');
+            exit;
+        } catch (PDOException $e) {
+            header('Location: orders.php?msg=Ошибка при назначении&type=error');
+            exit;
+        }
+    }
+    
+    if ($_POST['action'] === 'update_status' && isset($_POST['order_id'], $_POST['status'])) {
+        $order_id = (int)$_POST['order_id'];
+        $status = $_POST['status'];
+        $allowed_statuses = ['новая', 'в работе', 'выполнена', 'отменена'];
+        
+        if (in_array($status, $allowed_statuses)) {
+            try {
+                $stmt = $pdo->prepare("UPDATE Orders SET Status = ? WHERE ID_order = ?");
+                $stmt->execute([$status, $order_id]);
+                header('Location: orders.php?msg=Статус обновлен&type=success');
+                exit;
+            } catch (PDOException $e) {
+                header('Location: orders.php?msg=Ошибка при обновлении статуса&type=error');
+                exit;
+            }
+        }
+    }
+}
+
+// Получаем сообщение из URL
+$message = isset($_GET['msg']) ? $_GET['msg'] : '';
+$message_type = isset($_GET['type']) ? $_GET['type'] : '';
 
 // Получаем все заявки
 try {
@@ -30,11 +71,25 @@ try {
     $orders = [];
 }
 
+// Получаем список менеджеров для назначения
+try {
+    $stmt = $pdo->query("SELECT ID_personal, Fio FROM Personnel WHERE Role IN ('admin', 'manager') ORDER BY Fio");
+    $managers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $managers = [];
+}
+
 $page_title = "Управление заявками";
 include 'includes/admin_header.php';
 ?>
 
 <!-- Фильтры -->
+<?php if ($message): ?>
+    <div class="message <?= $message_type === 'error' ? 'error' : 'success' ?>">
+        <?= htmlspecialchars($message) ?>
+    </div>
+<?php endif; ?>
+
 <div class="filter-bar">
     <input type="text" id="searchInput" placeholder="Поиск по клиенту или телефону..." onkeyup="filterTable()">
 </div>
@@ -56,30 +111,34 @@ include 'includes/admin_header.php';
                     <th>Услуга</th>
                     <th>Дата/Время</th>
                     <th>Оплата</th>
+                    <th>Статус</th>
                     <th>Менеджер</th>
-                    <th>Действие</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($orders as $order): ?>
                     <?php
-                        // Определяем класс строки
+                        // Определяем класс строки и бейдж статуса
                         $row_class = 'order-row-normal';
-                        $status_badge = '';
+                        $status_class = '';
+                        $status_text = $order['Status'] ?? 'новая';
                         
-                        // Новая заявка (Status = 'новая')
-                        if (isset($order['Status']) && $order['Status'] === 'новая') {
+                        // Новая заявка
+                        if ($status_text === 'новая') {
                             $row_class = 'order-row-new';
-                            $status_badge = '<span class="status-badge status-badge-new">Новая</span> ';
+                            $status_class = 'status-badge-new';
+                        } elseif ($status_text === 'в работе') {
+                            $status_class = 'status-badge-in-progress';
+                        } elseif ($status_text === 'выполнена') {
+                            $status_class = 'status-badge-completed';
+                        } elseif ($status_text === 'отменена') {
+                            $status_class = 'status-badge-cancelled';
                         }
-                        // Заявка без менеджера
+                        
+                        // Заявка без менеджера (приоритет над статусом)
                         if (empty($order['manager_id'])) {
                             $row_class = 'order-row-no-manager';
-                            $status_badge = '<span class="status-badge status-badge-no-manager">Без менеджера</span> ';
-                        }
-                        // Заявка с менеджером
-                        if (!empty($order['manager_id']) && (!isset($order['Status']) || $order['Status'] !== 'новая')) {
-                            $status_badge = '<span class="status-badge status-badge-assigned">В работе</span> ';
                         }
                     ?>
                     <tr class="<?= $row_class ?>">
@@ -89,19 +148,46 @@ include 'includes/admin_header.php';
                         <td><?= htmlspecialchars($order['Mail']) ?></td>
                         <td><?= htmlspecialchars($order['service_name']) ?></td>
                         <td><?= $order['Time_the_bell'] ? date('d.m.Y H:i', strtotime($order['Time_the_bell'])) : 'Не указано' ?></td>
-                        <td><?= $order['Type_pay'] === 'cash' ? 'Наличные' : 'Безнал' ?></td>
+                        <td><?= $order['Type_pay'] === 'card' ? 'Карта' : ($order['Type_pay'] === 'cash' ? 'Наличные' : 'Безнал') ?></td>
                         <td>
-                            <?= $status_badge ?>
-                            <?= $order['manager_name'] ? htmlspecialchars($order['manager_name']) : '<em style="color: #dc3545;">Не назначен</em>' ?>
+                            <span class="status-badge <?= $status_class ?>"><?= htmlspecialchars($status_text) ?></span>
+                        </td>
+                        <td>
+                            <?= $order['manager_name'] ? '<strong>' . htmlspecialchars($order['manager_name']) . '</strong>' : '<em style="color: #dc3545;">Не назначен</em>' ?>
                         </td>
                         <td>
                             <a href="order_view.php?id=<?= $order['ID_order'] ?>" class="btn-small btn-primary">Просмотр</a>
+                            <?php if (empty($order['manager_id']) && $role === 'admin'): ?>
+                                <button class="btn-small btn-success" onclick="assignManager(<?= $order['ID_order'] ?>)">Назначить</button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>
+</div>
+
+<!-- Модальное окно назначения менеджера -->
+<div id="assignModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <span class="close-modal" onclick="closeAssignModal()">&times;</span>
+        <h3>Назначение менеджера</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="assign_manager">
+            <input type="hidden" id="modal_order_id" name="order_id">
+            <div class="form-group">
+                <label>Выберите менеджера:</label>
+                <select name="manager_id" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="">-- Выберите --</option>
+                    <?php foreach ($managers as $mgr): ?>
+                        <option value="<?= $mgr['ID_personal'] ?>"><?= htmlspecialchars($mgr['Fio']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <button type="submit" class="btn-submit-order" style="margin-top: 15px;">Назначить</button>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -126,6 +212,23 @@ include 'includes/admin_header.php';
                     tr[i].style.display = 'none';
                 }
             }
+        }
+    }
+    
+    function assignManager(orderId) {
+        document.getElementById('modal_order_id').value = orderId;
+        document.getElementById('assignModal').style.display = 'block';
+    }
+    
+    function closeAssignModal() {
+        document.getElementById('assignModal').style.display = 'none';
+    }
+    
+    // Закрытие модального окна при клике вне его
+    window.onclick = function(event) {
+        const modal = document.getElementById('assignModal');
+        if (event.target === modal) {
+            closeAssignModal();
         }
     }
 </script>

@@ -89,9 +89,9 @@ try {
     foreach ($service_tab_ids as $service_tab_id) {
         $stmt = $pdo->prepare("
             INSERT INTO Orders 
-            (Client, Num_phone, Mail, Service_tab_ID, Time_the_bell, Type_pay, Face_client, Other_inform) 
+            (Client, Num_phone, Mail, Service_tab_ID, Time_the_bell, Type_pay, Face_client, Other_inform, Status) 
             VALUES 
-            (:client, :phone, :email, :service_tab_id, :time_bell, :type_pay, 'physical', :other_inform)
+            (:client, :phone, :email, :service_tab_id, :time_bell, :type_pay, 'physical', :other_inform, 'новая')
         ");
         
         $stmt->execute([
