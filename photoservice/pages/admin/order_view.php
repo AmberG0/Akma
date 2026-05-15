@@ -23,7 +23,7 @@ if ($order_id <= 0) {
 
 // Обработка изменения статуса
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
-    $status = $_POST['status'];
+    $status = isset($_POST['status']) ? trim($_POST['status']) : '';
     $allowed_statuses = ['новая', 'в работе', 'выполнена', 'отменена'];
     
     if (in_array($status, $allowed_statuses)) {
@@ -32,12 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $stmt->execute([$status, $order_id]);
             $message = 'Статус успешно обновлен';
             $message_type = 'success';
-            // Обновляем данные заявки
-            $order['Status'] = $status;
+            
+            // Перезагружаем страницу чтобы увидеть изменения
+            header('Location: order_view.php?id=' . $order_id . '&msg=' . urlencode($message) . '&type=' . $message_type);
+            exit;
         } catch (PDOException $e) {
             $message = 'Ошибка при обновлении статуса: ' . $e->getMessage();
             $message_type = 'error';
         }
+    } else {
+        $message = 'Недопустимый статус';
+        $message_type = 'error';
     }
 }
 
@@ -53,6 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['assign_manager'])) {
         $message = 'Ошибка при назначении: ' . $e->getMessage();
         $message_type = 'error';
     }
+}
+
+// Получение сообщения из URL
+if (isset($_GET['msg'])) {
+    $message = $_GET['msg'];
+    $message_type = isset($_GET['type']) ? $_GET['type'] : 'success';
 }
 
 // Получение данных заявки

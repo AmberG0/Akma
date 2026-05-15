@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     if ($_POST['action'] === 'update_status' && isset($_POST['order_id'], $_POST['status'])) {
         $order_id = (int)$_POST['order_id'];
-        $status = $_POST['status'];
+        $status = trim($_POST['status']);
         $allowed_statuses = ['новая', 'в работе', 'выполнена', 'отменена'];
         
         if (in_array($status, $allowed_statuses)) {
@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 header('Location: orders.php?msg=Ошибка при обновлении статуса&type=error');
                 exit;
             }
+        } else {
+            header('Location: orders.php?msg=Недопустимый статус&type=error');
+            exit;
         }
     }
 }
@@ -157,8 +160,21 @@ include 'includes/admin_header.php';
                         </td>
                         <td>
                             <a href="order_view.php?id=<?= $order['ID_order'] ?>" class="btn-small btn-primary">Просмотр</a>
+                            
+                            <!-- Форма изменения статуса -->
+                            <form method="POST" style="display: inline-block; margin-left: 5px;">
+                                <input type="hidden" name="action" value="update_status">
+                                <input type="hidden" name="order_id" value="<?= $order['ID_order'] ?>">
+                                <select name="status" onchange="this.form.submit()" style="padding: 4px 8px; font-size: 12px; border-radius: 4px; border: 1px solid #ddd;">
+                                    <option value="новая" <?= $status_text === 'новая' ? 'selected' : '' ?>>🆕 Новая</option>
+                                    <option value="в работе" <?= $status_text === 'в работе' ? 'selected' : '' ?>>🔄 В работе</option>
+                                    <option value="выполнена" <?= $status_text === 'выполнена' ? 'selected' : '' ?>>✅ Выполнена</option>
+                                    <option value="отменена" <?= $status_text === 'отменена' ? 'selected' : '' ?>>❌ Отменена</option>
+                                </select>
+                            </form>
+                            
                             <?php if (empty($order['manager_id']) && $role === 'admin'): ?>
-                                <button class="btn-small btn-success" onclick="assignManager(<?= $order['ID_order'] ?>)">Назначить</button>
+                                <button class="btn-small btn-success" onclick="assignManager(<?= $order['ID_order'] ?>)" style="margin-left: 5px;">Назначить</button>
                             <?php endif; ?>
                         </td>
                     </tr>
