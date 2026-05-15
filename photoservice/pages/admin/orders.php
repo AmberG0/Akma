@@ -15,9 +15,9 @@ $user_fio = $_SESSION['fio'];
 try {
     $stmt = $pdo->query("
         SELECT o.ID_order, o.Client, o.Num_phone, o.Mail, o.Time_the_bell, 
-               o.Type_pay, o.Face_client, o.Other_inform,
+               o.Type_pay, o.Face_client, o.Other_inform, o.Status,
                st.Description as service_name, st.Service_list_count, st.Count_pay,
-               p.Fio as manager_name
+               p.Fio as manager_name, p.ID_personal as manager_id
         FROM Orders o
         JOIN Services_tab st ON o.Service_tab_ID = st.Service_tab_ID
         LEFT JOIN Personnel p ON o.Accept_order_Per_ID = p.ID_personal
@@ -39,171 +39,6 @@ $page_title = "Управление заявками";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?> - СтройСервис</title>
     <link rel="stylesheet" href="../../i/Styles/main.css">
-    <style>
-        body {
-            background-color: #F5F5F5;
-        }
-        
-        .admin-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
-        }
-        
-        .admin-sidebar {
-            background-color: #1A1A1A;
-            color: #FFFFFF;
-            padding: 20px;
-        }
-        
-        .admin-logo {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #333;
-        }
-        
-        .admin-logo span {
-            color: #FFD700;
-        }
-        
-        .admin-nav {
-            list-style: none;
-        }
-        
-        .admin-nav li {
-            margin-bottom: 10px;
-        }
-        
-        .admin-nav a {
-            display: block;
-            padding: 12px 15px;
-            color: #CCCCCC;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-        
-        .admin-nav a:hover,
-        .admin-nav a.active {
-            background-color: #FFD700;
-            color: #1A1A1A;
-        }
-        
-        .admin-nav a.logout {
-            margin-top: 30px;
-            background-color: #c62828;
-            color: white;
-            text-align: center;
-        }
-        
-        .admin-nav a.logout:hover {
-            background-color: #b71c1c;
-        }
-        
-        .admin-content {
-            padding: 30px;
-        }
-        
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #FFD700;
-        }
-        
-        .admin-header h1 {
-            color: #1A1A1A;
-            font-size: 28px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-role {
-            background-color: #FFD700;
-            color: #1A1A1A;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .content-section {
-            background-color: #FFFFFF;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #1A1A1A;
-            border-bottom: 2px solid #FFD700;
-            padding-bottom: 10px;
-        }
-        
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .orders-table th,
-        .orders-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #EEEEEE;
-        }
-        
-        .orders-table th {
-            background-color: #F9F9F9;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-primary {
-            background-color: #FFD700;
-            color: #1A1A1A;
-            border: none;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #DDD;
-            color: #333;
-        }
-        
-        .filter-bar {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .filter-bar input,
-        .filter-bar select {
-            padding: 8px 12px;
-            border: 1px solid #DDD;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
     <div class="admin-layout">
@@ -267,7 +102,27 @@ $page_title = "Управление заявками";
                         </thead>
                         <tbody>
                             <?php foreach ($orders as $order): ?>
-                                <tr>
+                                <?php
+                                    // Определяем класс строки
+                                    $row_class = 'order-row-normal';
+                                    $status_badge = '';
+                                    
+                                    // Новая заявка (Status = 'новая')
+                                    if (isset($order['Status']) && $order['Status'] === 'новая') {
+                                        $row_class = 'order-row-new';
+                                        $status_badge = '<span class="status-badge status-badge-new">Новая</span> ';
+                                    }
+                                    // Заявка без менеджера
+                                    if (empty($order['manager_id'])) {
+                                        $row_class = 'order-row-no-manager';
+                                        $status_badge = '<span class="status-badge status-badge-no-manager">Без менеджера</span> ';
+                                    }
+                                    // Заявка с менеджером
+                                    if (!empty($order['manager_id']) && (!isset($order['Status']) || $order['Status'] !== 'новая')) {
+                                        $status_badge = '<span class="status-badge status-badge-assigned">В работе</span> ';
+                                    }
+                                ?>
+                                <tr class="<?= $row_class ?>">
                                     <td>#<?= $order['ID_order'] ?></td>
                                     <td><?= htmlspecialchars($order['Client']) ?></td>
                                     <td><?= htmlspecialchars($order['Num_phone']) ?></td>
@@ -275,7 +130,10 @@ $page_title = "Управление заявками";
                                     <td><?= htmlspecialchars($order['service_name']) ?></td>
                                     <td><?= $order['Time_the_bell'] ? date('d.m.Y H:i', strtotime($order['Time_the_bell'])) : 'Не указано' ?></td>
                                     <td><?= $order['Type_pay'] === 'cash' ? 'Наличные' : 'Безнал' ?></td>
-                                    <td><?= $order['manager_name'] ? htmlspecialchars($order['manager_name']) : 'Не назначен' ?></td>
+                                    <td>
+                                        <?= $status_badge ?>
+                                        <?= $order['manager_name'] ? htmlspecialchars($order['manager_name']) : '<em style="color: #dc3545;">Не назначен</em>' ?>
+                                    </td>
                                     <td>
                                         <a href="order_view.php?id=<?= $order['ID_order'] ?>" class="btn-small btn-primary">Просмотр</a>
                                     </td>
