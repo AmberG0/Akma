@@ -2703,56 +2703,62 @@ body.dark-theme .section-title {
     }
 }
 /* =============================================
-   СТИЛИ ДЛЯ ОПЛАТЫ КАРТОЙ (CART.PHP)
+   СТИЛИ ДЛЯ ОПЛАТЫ КАРТОЙ (CART.PHP) - КОМПАКТНЫЕ
    ============================================= */
 .payment-card-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border: 2px solid #FFD700;
-    border-radius: 8px;
-    padding: 25px;
-    margin: 25px 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .payment-title {
     color: #1A1A1A;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .card-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.card-inputs .form-group {
+    margin-bottom: 0;
 }
 
 .card-inputs .form-group label {
     font-weight: 600;
     color: #333;
-    font-size: 14px;
+    font-size: 12px;
+    margin-bottom: 4px;
 }
 
 .card-inputs .form-group input {
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    padding: 12px 15px;
-    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 13px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .card-inputs .form-group input:focus {
     border-color: #FFD700;
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
     outline: none;
 }
 
 #card_number {
+    grid-column: 1 / -1;
     font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 #card_expiry,
@@ -2762,16 +2768,17 @@ body.dark-theme .section-title {
 }
 
 #card_holder {
+    grid-column: 1 / -1;
     text-transform: uppercase;
     font-weight: 600;
 }
 
 .payment-note {
-    margin-top: 15px;
-    padding: 10px;
+    margin-top: 10px;
+    padding: 6px 10px;
     background: #fff;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 11px;
     color: #28a745;
     text-align: center;
     font-weight: 600;
