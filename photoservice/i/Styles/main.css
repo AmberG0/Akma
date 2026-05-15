@@ -1911,6 +1911,43 @@ body.dark-theme .section-title {
    Стили для админ-панели (orders.php)
    ======================================== */
 
+/* Таблица заявок */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders-table thead {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.orders-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.orders-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
 /* Выделение статусов заявок */
 .order-row-new {
     background-color: #fff3cd !important;
