@@ -2277,3 +2277,398 @@ body.dark-theme .section-title {
         padding: 8px 10px;
     }
 }
+
+/* ============================================
+   Стили для страницы "Подборка услуг" (cart.php)
+   ============================================ */
+.cart-section {
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.cart-table th {
+    background-color: #F9F9F9;
+    font-weight: 600;
+    color: #333;
+}
+
+.cart-table tbody tr:hover {
+    background-color: #FAFAFA;
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-remove {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-remove:hover {
+    background-color: #c82333;
+}
+
+.cart-total {
+    text-align: right;
+    font-size: 20px;
+    padding: 20px;
+    background-color: #F9F9F9;
+    border-radius: 4px;
+    border-top: 2px solid #FFD700;
+}
+
+#cart-total-amount {
+    font-weight: bold;
+    color: #FFD700;
+    font-size: 24px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.empty-cart p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Форма оформления заказа */
+.order-form-section {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FFD700;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group small {
+    color: #666;
+    font-size: 12px;
+}
+
+.privacy-consent {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #F9F9F9;
+    border-radius: 4px;
+    border-left: 3px solid #FFD700;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.checkbox-label span {
+    line-height: 1.4;
+}
+
+.privacy-link {
+    color: #FFD700;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.privacy-link:hover {
+    color: #e6c200;
+}
+
+.btn-submit-order {
+    background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);
+    color: #1A1A1A;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+}
+
+.btn-submit-order:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* ============================================
+   Стили для страницы "Наши работы" (works.php)
+   ============================================ */
+.works-hero {
+    background: linear-gradient(135deg, #1A1A1A 0%, #333333 100%);
+    color: #FFFFFF;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.works-hero h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    color: #FFD700;
+}
+
+.works-hero p {
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.works-section {
+    padding: 60px 0;
+}
+
+.section-title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1A1A1A;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #FFD700;
+    margin: 15px auto 0;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.review-card {
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-left: 4px solid #FFD700;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.review-author {
+    font-weight: bold;
+    color: #1A1A1A;
+    font-size: 16px;
+}
+
+.review-date {
+    color: #999;
+    font-size: 13px;
+}
+
+.review-rating {
+    color: #FFD700;
+    font-size: 20px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.review-text {
+    color: #555;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Форма добавления отзыва */
+.review-form-section {
+    background-color: #F9F9F9;
+    padding: 60px 0;
+    border-top: 1px solid #EEEEEE;
+}
+
+.review-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+}
+
+.rating-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.rating-input span {
+    font-size: 32px;
+    color: #DDD;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.rating-input span:hover,
+.rating-input span.active {
+    color: #FFD700;
+    transform: scale(1.1);
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);
+    color: #1A1A1A;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Адаптивность для cart и works */
+@media (max-width: 768px) {
+    .cart-table {
+        font-size: 14px;
+    }
+    
+    .cart-table th,
+    .cart-table td {
+        padding: 10px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .works-hero h1 {
+        font-size: 32px;
+    }
+}

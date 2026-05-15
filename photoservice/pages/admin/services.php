@@ -39,38 +39,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
     $unit = trim($_POST['unit']);
     $price = (float)$_POST['price'];
     $relevance = $_POST['relevance'];
-    $photo = trim($_POST['photo']);
     
-    if (empty($name) || empty($unit) || $price < 0) {
-        $message = 'Заполните обязательные поля';
-        $message_type = 'error';
-    } else {
-        try {
-            if ($service_id) {
-                // Обновление существующей услуги
-                $stmt = $pdo->prepare("UPDATE Services SET 
-                    Name = ?, 
-                    Category = ?, 
-                    Description = ?, 
-                    Unit = ?, 
-                    Price = ?, 
-                    Relevance = ?, 
-                    Photo = ? 
-                    WHERE ID_services = ?");
-                $stmt->execute([$name, $category, $description, $unit, $price, $relevance, $photo, $service_id]);
-                $message = 'Услуга успешно обновлена';
-                $message_type = 'success';
-            } else {
-                // Добавление новой услуги
-                $stmt = $pdo->prepare("INSERT INTO Services (Name, Category, Description, Unit, Price, Relevance, Photo) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)");
-                $stmt->execute([$name, $category, $description, $unit, $price, $relevance, $photo]);
-                $message = 'Услуга успешно добавлена';
-                $message_type = 'success';
-            }
-        } catch (PDOException $e) {
-            $message = 'Ошибка БД: ' . $e->getMessage();
+    // Обработка загрузки фото
+    $photo = '';
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = '../../uploads/services/';
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $file_type = $_FILES['photo']['type'];
+        $file_size = $_FILES['photo']['size'];
+        $file_tmp = $_FILES['photo']['tmp_name'];
+        $file_name = basename($_FILES['photo']['name']);
+        
+        // Проверка типа файла
+        if (!in_array($file_type, $allowed_types)) {
+            $message = 'Разрешены только изображения (JPEG, PNG, GIF, WebP)';
             $message_type = 'error';
+        } elseif ($file_size > 5 * 1024 * 1024) { // 5MB max
+            $message = 'Размер файла не должен превышать 5MB';
+            $message_type = 'error';
+        } else {
+            // Генерация уникального имени
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            $new_filename = 'service_' . time() . '_' . uniqid() . '.' . $extension;
+            $upload_path = $upload_dir . $new_filename;
+            
+            if (move_uploaded_file($file_tmp, $upload_path)) {
+                $photo = 'uploads/services/' . $new_filename;
+            } else {
+                $message = 'Ошибка при загрузке файла';
+                $message_type = 'error';
+            }
+        }
+    } elseif ($service_id) {
+        // При редактировании оставляем старое фото, если новое не загружено
+        $stmt = $pdo->prepare("SELECT Photo FROM Services WHERE ID_services = ?");
+        $stmt->execute([$service_id]);
+        $old_service = $stmt->fetch(PDO::FETCH_ASSOC);
+        $photo = $old_service['Photo'] ?? '';
+    }
+    
+    if (empty($message) || $message_type !== 'error') {
+        if (empty($name) || empty($unit) || $price < 0) {
+            $message = 'Заполните обязательные поля';
+            $message_type = 'error';
+        } else {
+            try {
+                if ($service_id) {
+                    // Обновление существующей услуги
+                    $stmt = $pdo->prepare("UPDATE Services SET 
+                        Name = ?, 
+                        Category = ?, 
+                        Description = ?, 
+                        Unit = ?, 
+                        Price = ?, 
+                        Relevance = ?, 
+                        Photo = ? 
+                        WHERE ID_services = ?");
+                    $stmt->execute([$name, $category, $description, $unit, $price, $relevance, $photo, $service_id]);
+                    $message = 'Услуга успешно обновлена';
+                    $message_type = 'success';
+                } else {
+                    // Добавление новой услуги
+                    $stmt = $pdo->prepare("INSERT INTO Services (Name, Category, Description, Unit, Price, Relevance, Photo) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$name, $category, $description, $unit, $price, $relevance, $photo]);
+                    $message = 'Услуга успешно добавлена';
+                    $message_type = 'success';
+                }
+            } catch (PDOException $e) {
+                $message = 'Ошибка БД: ' . $e->getMessage();
+                $message_type = 'error';
+            }
         }
     }
     
@@ -545,8 +584,10 @@ $page_title = "Управление услугами";
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo">Путь к фото</label>
-                    <input type="text" id="photo" name="photo" placeholder="i/Images/services/photo.jpg">
+                    <label for="photo">Фото услуги</label>
+                    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+                    <small style="color: #666; display: block; margin-top: 5px;">Разрешенные форматы: JPEG, PNG, GIF, WebP. Макс. размер: 5MB</small>
+                    <div id="photoPreview" style="margin-top: 10px;"></div>
                 </div>
                 
                 <button type="submit" class="btn-submit">Сохранить</button>
@@ -586,6 +627,7 @@ $page_title = "Управление услугами";
             document.getElementById('modalTitle').textContent = 'Добавить услугу';
             document.getElementById('serviceForm').reset();
             document.getElementById('service_id').value = '';
+            document.getElementById('photoPreview').innerHTML = '';
             document.getElementById('serviceModal').style.display = 'block';
         }
         
@@ -598,7 +640,17 @@ $page_title = "Управление услугами";
             document.getElementById('unit').value = service.Unit;
             document.getElementById('price').value = service.Price;
             document.getElementById('relevance').value = service.Relevance;
-            document.getElementById('photo').value = service.Photo || '';
+            // Не заполняем поле photo, так как теперь это file input
+            document.getElementById('photo').value = '';
+            
+            // Показываем текущее фото если оно есть
+            const previewDiv = document.getElementById('photoPreview');
+            if (service.Photo && service.Photo !== '') {
+                previewDiv.innerHTML = '<div style="margin-top: 10px;"><img src="../../' + service.Photo + '" alt="Текущее фото" style="max-width: 200px; max-height: 200px; border-radius: 4px;"></div><small>Загрузите новое фото, чтобы заменить текущее</small>';
+            } else {
+                previewDiv.innerHTML = '';
+            }
+            
             document.getElementById('serviceModal').style.display = 'block';
         }
         
