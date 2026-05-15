@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$login]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($user && password_verify($password, $user['Password'])) {
+            if ($user && $password === $user['Password']) {
                 // Успешная авторизация
                 $_SESSION['user_id'] = $user['ID_personal'];
                 $_SESSION['login'] = $user['Login'];

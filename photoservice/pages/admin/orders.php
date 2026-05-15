@@ -11,35 +11,26 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
 $role = $_SESSION['role'];
 $user_fio = $_SESSION['fio'];
 
-// Получаем статистику для dashboard
+// Получаем все заявки
 try {
-    // Количество заявок за все время
-    $stmt = $pdo->query("SELECT COUNT(*) as count FROM Orders");
-    $total_orders = $stmt->fetch()['count'];
-    
-    // Последние заявки
     $stmt = $pdo->query("
-        SELECT o.ID_order, o.Client, o.Num_phone, o.Time_the_bell, 
-               st.Description as service_name
+        SELECT o.ID_order, o.Client, o.Num_phone, o.Mail, o.Time_the_bell, 
+               o.Type_pay, o.Face_client, o.Other_inform,
+               st.Description as service_name, st.Service_list_count, st.Count_pay,
+               p.Fio as manager_name
         FROM Orders o
         JOIN Services_tab st ON o.Service_tab_ID = st.Service_tab_ID
+        LEFT JOIN Personnel p ON o.Accept_order_Per_ID = p.ID_personal
         ORDER BY o.Time_the_bell DESC
-        LIMIT 10
     ");
-    $recent_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Количество услуг
-    $stmt = $pdo->query("SELECT COUNT(*) as count FROM Services WHERE Relevance = 'да'");
-    $services_count = $stmt->fetch()['count'];
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
 } catch (PDOException $e) {
-    error_log('Ошибка при загрузке данных dashboard: ' . $e->getMessage());
-    $total_orders = 0;
-    $recent_orders = [];
-    $services_count = 0;
+    error_log('Ошибка при загрузке заявок: ' . $e->getMessage());
+    $orders = [];
 }
 
-$page_title = "Панель управления";
+$page_title = "Управление заявками";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -144,33 +135,6 @@ $page_title = "Панель управления";
             font-weight: bold;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background-color: #FFFFFF;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #FFD700;
-        }
-        
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #FFD700;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-        }
-        
         .content-section {
             background-color: #FFFFFF;
             padding: 25px;
@@ -204,33 +168,6 @@ $page_title = "Панель управления";
             color: #333;
         }
         
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .status-new {
-            background-color: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .status-in_progress {
-            background-color: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .status-completed {
-            background-color: #e8f5e9;
-            color: #388e3c;
-        }
-        
-        .status-cancelled {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        
         .btn-small {
             padding: 6px 12px;
             font-size: 12px;
@@ -251,6 +188,21 @@ $page_title = "Панель управления";
             border: 1px solid #DDD;
             color: #333;
         }
+        
+        .filter-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-bar input,
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -260,13 +212,13 @@ $page_title = "Панель управления";
             <div class="admin-logo">Строй<span>Сервис</span></div>
             
             <ul class="admin-nav">
-                <li><a href="dashboard.php" class="active">📊 Dashboard</a></li>
+                <li><a href="dashboard.php">📊 Dashboard</a></li>
                 <?php if ($role === 'admin'): ?>
-                    <li><a href="orders.php">📋 Заявки</a></li>
+                    <li><a href="orders.php" class="active">📋 Заявки</a></li>
                     <li><a href="services.php">🛠️ Услуги</a></li>
                     <li><a href="personnel.php">👥 Персонал</a></li>
                 <?php else: ?>
-                    <li><a href="orders.php">📋 Заявки</a></li>
+                    <li><a href="orders.php" class="active">📋 Заявки</a></li>
                     <li><a href="services.php">🛠️ Услуги</a></li>
                 <?php endif; ?>
                 <li><a href="../../index.php">🏠 На сайт</a></li>
@@ -277,51 +229,50 @@ $page_title = "Панель управления";
         <!-- Основной контент -->
         <main class="admin-content">
             <div class="admin-header">
-                <h1>Панель управления</h1>
+                <h1>Управление заявками</h1>
                 <div class="user-info">
                     <span><?= htmlspecialchars($user_fio) ?></span>
                     <span class="user-role"><?= $role === 'admin' ? 'Администратор' : 'Менеджер' ?></span>
                 </div>
             </div>
             
-            <!-- Статистика -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number"><?= $total_orders ?></div>
-                    <div class="stat-label">Всего заявок</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number"><?= $services_count ?></div>
-                    <div class="stat-label">Активных услуг</div>
-                </div>
+            <!-- Фильтры -->
+            <div class="filter-bar">
+                <input type="text" id="searchInput" placeholder="Поиск по клиенту или телефону..." onkeyup="filterTable()">
             </div>
             
-            <!-- Последние заявки -->
+            <!-- Таблица заявок -->
             <div class="content-section">
-                <h2 class="section-title">Последние заявки</h2>
+                <h2 class="section-title">Все заявки (<?= count($orders) ?>)</h2>
                 
-                <?php if (empty($recent_orders)): ?>
+                <?php if (empty($orders)): ?>
                     <p>Заявок пока нет.</p>
                 <?php else: ?>
-                    <table class="orders-table">
+                    <table class="orders-table" id="ordersTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Клиент</th>
-                                <th>Услуга</th>
                                 <th>Телефон</th>
+                                <th>Email</th>
+                                <th>Услуга</th>
                                 <th>Дата/Время</th>
+                                <th>Оплата</th>
+                                <th>Менеджер</th>
                                 <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($recent_orders as $order): ?>
+                            <?php foreach ($orders as $order): ?>
                                 <tr>
                                     <td>#<?= $order['ID_order'] ?></td>
                                     <td><?= htmlspecialchars($order['Client']) ?></td>
-                                    <td><?= htmlspecialchars($order['service_name']) ?></td>
                                     <td><?= htmlspecialchars($order['Num_phone']) ?></td>
+                                    <td><?= htmlspecialchars($order['Mail']) ?></td>
+                                    <td><?= htmlspecialchars($order['service_name']) ?></td>
                                     <td><?= $order['Time_the_bell'] ? date('d.m.Y H:i', strtotime($order['Time_the_bell'])) : 'Не указано' ?></td>
+                                    <td><?= $order['Type_pay'] === 'cash' ? 'Наличные' : 'Безнал' ?></td>
+                                    <td><?= $order['manager_name'] ? htmlspecialchars($order['manager_name']) : 'Не назначен' ?></td>
                                     <td>
                                         <a href="order_view.php?id=<?= $order['ID_order'] ?>" class="btn-small btn-primary">Просмотр</a>
                                     </td>
@@ -333,5 +284,31 @@ $page_title = "Панель управления";
             </div>
         </main>
     </div>
+    
+    <script>
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('ordersTable');
+            const tr = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < tr.length; i++) {
+                const tdClient = tr[i].getElementsByTagName('td')[1];
+                const tdPhone = tr[i].getElementsByTagName('td')[2];
+                
+                if (tdClient || tdPhone) {
+                    const clientValue = tdClient.textContent || tdClient.innerText;
+                    const phoneValue = tdPhone.textContent || tdPhone.innerText;
+                    
+                    if (clientValue.toUpperCase().indexOf(filter) > -1 || 
+                        phoneValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                    } else {
+                        tr[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
