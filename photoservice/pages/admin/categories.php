@@ -1,16 +1,24 @@
 <?php
 session_start();
+require_once '../../i/WebsiteBackend/db.php';
 
 // Проверка авторизации
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
     header('Location: login.php');
     exit;
 }
 
-require_once '../../WebsiteBackend/db.php';
+// Проверка прав администратора
+if ($_SESSION['role'] !== 'admin') {
+    header('Location: dashboard.php');
+    exit;
+}
 
+$role = $_SESSION['role'];
+$user_fio = $_SESSION['fio'];
+$user_id = $_SESSION['user_id'];
 $message = '';
-$error = '';
+$message_type = '';
 
 // Обработка действий
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,21 +29,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = trim($_POST['description'] ?? '');
         
         if (empty($name)) {
-            $error = 'Название категории обязательно';
+            $message = 'Название категории обязательно';
+            $message_type = 'error';
         } else {
             try {
                 if ($action === 'add') {
                     $stmt = $pdo->prepare("INSERT INTO Category (Name, Description) VALUES (?, ?)");
                     $stmt->execute([$name, $description]);
                     $message = 'Категория успешно добавлена';
+                    $message_type = 'success';
                 } else {
                     $id = (int)$_POST['id'];
                     $stmt = $pdo->prepare("UPDATE Category SET Name = ?, Description = ? WHERE ID_category = ?");
                     $stmt->execute([$name, $description, $id]);
                     $message = 'Категория успешно обновлена';
+                    $message_type = 'success';
                 }
             } catch (PDOException $e) {
-                $error = 'Ошибка базы данных: ' . $e->getMessage();
+                $message = 'Ошибка базы данных: ' . $e->getMessage();
+                $message_type = 'error';
             }
         }
     } elseif ($action === 'delete') {
@@ -47,14 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = $stmt->fetchColumn();
             
             if ($count > 0) {
-                $error = 'Нельзя удалить категорию, в которой есть услуги';
+                $message = 'Нельзя удалить категорию, в которой есть услуги';
+                $message_type = 'error';
             } else {
                 $stmt = $pdo->prepare("DELETE FROM Category WHERE ID_category = ?");
                 $stmt->execute([$id]);
                 $message = 'Категория успешно удалена';
+                $message_type = 'success';
             }
         } catch (PDOException $e) {
-            $error = 'Ошибка базы данных: ' . $e->getMessage();
+            $message = 'Ошибка базы данных: ' . $e->getMessage();
+            $message_type = 'error';
         }
     }
 }
@@ -69,7 +84,8 @@ try {
                          ORDER BY c.Name");
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error = 'Ошибка при загрузке категорий: ' . $e->getMessage();
+    $message = 'Ошибка при загрузке категорий: ' . $e->getMessage();
+    $message_type = 'error';
 }
 
 // Получение категории для редактирования
@@ -81,7 +97,8 @@ if (isset($_GET['edit'])) {
         $stmt->execute([$id]);
         $editCategory = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        $error = 'Ошибка при загрузке категории';
+        $message = 'Ошибка при загрузке категории';
+        $message_type = 'error';
     }
 }
 ?>
@@ -90,53 +107,275 @@ if (isset($_GET['edit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление категориями - Админ панель</title>
-    <link rel="stylesheet" href="../../Styles/main.css">
+    <title><?= $page_title ?? 'Управление категориями' ?> - СтройСервис</title>
+    <link rel="stylesheet" href="../../i/Styles/main.css">
     <style>
-        .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .btn-primary { background: #FFD700; color: #000; }
-        .btn-danger { background: #dc3545; color: white; }
-        .btn-success { background: #28a745; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn:hover { opacity: 0.9; }
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #FFD700; font-weight: bold; }
-        tr:hover { background: #f5f5f5; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-        .modal-content { background: white; margin: 10% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .form-group textarea { height: 100px; resize: vertical; }
-        .alert { padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .actions { display: flex; gap: 5px; }
-        .badge { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
-        .badge-info { background: #17a2b8; color: white; }
+        body {
+            background-color: #F5F5F5;
+        }
+        
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+            padding: 20px;
+        }
+        
+        .admin-logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .admin-logo span {
+            color: #FFD700;
+        }
+        
+        .admin-nav {
+            list-style: none;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 10px;
+        }
+        
+        .admin-nav a {
+            display: block;
+            padding: 12px 15px;
+            color: #CCCCCC;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background-color: #FFD700;
+            color: #1A1A1A;
+        }
+        
+        .admin-nav a.logout {
+            margin-top: 30px;
+            background-color: #c62828;
+            color: white;
+            text-align: center;
+        }
+        
+        .admin-nav a.logout:hover {
+            background-color: #b71c1c;
+        }
+        
+        .admin-content {
+            padding: 30px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #FFD700;
+        }
+        
+        .admin-header h1 {
+            color: #1A1A1A;
+            font-size: 28px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-role {
+            background-color: #FFD700;
+            color: #1A1A1A;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: #FFD700;
+            color: #000;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #FFD700;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>📁 Управление категориями</h1>
-            <div>
-                <a href="dashboard.php" class="btn btn-secondary">← Назад</a>
+    <div class="admin-layout">
+        <!-- Боковое меню -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">Строй<span>Сервис</span></div>
+            
+            <ul class="admin-nav">
+                <li><a href="dashboard.php">📊 Dashboard</a></li>
+                <li><a href="orders.php">📋 Заявки</a></li>
+                <li><a href="services.php">🛠️ Услуги</a></li>
+                <li><a href="categories.php" class="active">📁 Категории</a></li>
+                <li><a href="personnel.php">👥 Персонал</a></li>
+                <li><a href="../../index.php">🏠 На сайт</a></li>
+                <li><a href="logout.php" class="logout">Выйти</a></li>
+            </ul>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>📁 Управление категориями</h1>
+                <div class="user-info">
+                    <span><?= htmlspecialchars($user_fio) ?></span>
+                    <span class="user-role">Администратор</span>
+                </div>
+            </div>
+
+            <?php if ($message): ?>
+                <div class="alert alert-<?= $message_type ?>"><?= htmlspecialchars($message) ?></div>
+            <?php endif; ?>
+
+            <div style="margin-bottom: 20px;">
                 <button class="btn btn-primary" onclick="openAddModal()">+ Добавить категорию</button>
             </div>
-        </div>
-
-        <?php if ($message): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-        <?php endif; ?>
-        
-        <?php if ($error): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
 
         <div class="table-responsive">
             <table>
@@ -169,6 +408,7 @@ if (isset($_GET['edit'])) {
                 </tbody>
             </table>
         </div>
+        </main>
     </div>
 
     <!-- Модальное окно добавления/редактирования -->
