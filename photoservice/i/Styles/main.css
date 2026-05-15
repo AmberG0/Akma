@@ -2709,47 +2709,50 @@ body.dark-theme .section-title {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border: 2px solid #FFD700;
     border-radius: 6px;
-    padding: 15px;
-    margin: 20px 0;
+    padding: 12px;
+    margin: 15px 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .payment-title {
     color: #1A1A1A;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
+    gap: 6px;
+}
+
+.card-inputs-compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
 
-.card-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.card-inputs .form-group {
+.form-group-compact {
     margin-bottom: 0;
 }
 
-.card-inputs .form-group label {
+.form-group-compact label {
     font-weight: 600;
     color: #333;
-    font-size: 12px;
-    margin-bottom: 4px;
+    font-size: 11px;
+    margin-bottom: 3px;
+    display: block;
 }
 
-.card-inputs .form-group input {
+.form-group-compact input {
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 8px 10px;
-    font-size: 13px;
+    padding: 6px 8px;
+    font-size: 12px;
     transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.card-inputs .form-group input:focus {
+.form-group-compact input:focus {
     border-color: #FFD700;
     box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
     outline: none;
@@ -2758,13 +2761,27 @@ body.dark-theme .section-title {
 #card_number {
     grid-column: 1 / -1;
     font-family: 'Courier New', monospace;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+}
+
+.form-row-compact {
+    display: contents;
 }
 
 #card_expiry,
 #card_cvv {
-    text-transform: uppercase;
-    font-weight: 600;
+    /* уже в grid */
+}
+
+#card_holder {
+    grid-column: 1 / -1;
+}
+
+.payment-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 8px;
+    text-align: center;
 }
 
 #card_holder {
@@ -2773,16 +2790,9 @@ body.dark-theme .section-title {
     font-weight: 600;
 }
 
-.payment-note {
-    margin-top: 10px;
-    padding: 6px 10px;
-    background: #fff;
-    border-radius: 4px;
-    font-size: 11px;
-    color: #28a745;
-    text-align: center;
-    font-weight: 600;
-}
+/* =============================================
+   АНИМАЦИИ И ОСТАЛЬНОЕ
+   ============================================= */
 
 /* Анимация пульсации для новых заявок */
 @keyframes pulse-yellow {

@@ -21,6 +21,26 @@ if ($order_id <= 0) {
     exit;
 }
 
+// Обработка изменения статуса
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
+    $status = $_POST['status'];
+    $allowed_statuses = ['новая', 'в работе', 'выполнена', 'отменена'];
+    
+    if (in_array($status, $allowed_statuses)) {
+        try {
+            $stmt = $pdo->prepare("UPDATE Orders SET Status = ? WHERE ID_order = ?");
+            $stmt->execute([$status, $order_id]);
+            $message = 'Статус успешно обновлен';
+            $message_type = 'success';
+            // Обновляем данные заявки
+            $order['Status'] = $status;
+        } catch (PDOException $e) {
+            $message = 'Ошибка при обновлении статуса: ' . $e->getMessage();
+            $message_type = 'error';
+        }
+    }
+}
+
 // Обработка назначения менеджера
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['assign_manager'])) {
     $manager_id = (int)$_POST['manager_id'];
