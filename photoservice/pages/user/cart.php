@@ -1,9 +1,11 @@
 <?php
 session_start();
+// Подключение к базе данных (относительный путь из pages/user/)
 require_once '../../i/WebsiteBackend/db.php';
 
 $page_title = "Подборка услуг";
-include '../../includes/header.php';
+// Подключаем header с правильным относительным путем
+include 'includes/header.php';
 
 // Получаем корзину из сессии
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -207,4 +209,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

@@ -32,17 +32,14 @@ if ($quantity < 1) {
     exit;
 }
 
-if (empty($client_name) || empty($client_phone) || empty($client_email)) {
-    echo json_encode(['success' => false, 'message' => 'Заполните все поля контактных данных']);
-    exit;
+// Сохраняем контакты клиента в сессию (если переданы)
+if (!empty($client_name) && !empty($client_phone) && !empty($client_email)) {
+    $_SESSION['client'] = [
+        'name' => $client_name,
+        'phone' => $client_phone,
+        'email' => $client_email
+    ];
 }
-
-// Сохраняем контакты клиента в сессию
-$_SESSION['client'] = [
-    'name' => $client_name,
-    'phone' => $client_phone,
-    'email' => $client_email
-];
 
 // Инициализируем корзину в сессии, если её нет
 if (!isset($_SESSION['cart'])) {

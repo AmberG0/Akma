@@ -3,7 +3,7 @@ session_start();
 require_once '../../i/WebsiteBackend/db.php';
 
 $page_title = "Заказ оформлен";
-include '../../includes/header.php';
+include 'includes/header.php';
 
 $order_count = isset($_GET['order_count']) ? (int)$_GET['order_count'] : 0;
 ?>
@@ -127,4 +127,4 @@ body.dark-theme .contact-info h3 {
 }
 </style>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
