@@ -435,43 +435,79 @@ $page_title = "Заявка #" . $order_id;
                 </table>
             </div>
             
-            <!-- Назначение менеджера -->
+            <!-- Статус и назначение менеджера -->
             <div class="content-section">
-                <h2 class="section-title">Ответственный менеджер</h2>
+                <h2 class="section-title">Статус заявки и менеджер</h2>
                 
-                <?php if ($order['manager_name']): ?>
-                    <div style="margin-bottom: 15px;">
-                        <span class="manager-badge">
-                            👤 <?= htmlspecialchars($order['manager_name']) ?>
-                        </span>
-                    </div>
-                <?php else: ?>
-                    <div style="margin-bottom: 15px;">
-                        <span class="no-manager">
-                            ⚠️ Менеджер не назначен
-                        </span>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($role === 'admin'): ?>
-                    <form method="POST">
-                        <div class="form-group">
-                            <label for="manager_id">Назначить менеджера:</label>
-                            <select name="manager_id" id="manager_id" required>
-                                <option value="">-- Выберите менеджера --</option>
-                                <?php foreach ($managers as $manager): ?>
-                                    <option value="<?= $manager['ID_personal'] ?>" 
-                                            <?= $order['manager_id'] == $manager['ID_personal'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($manager['Fio']) ?> (<?= $manager['Role'] ?>)
-                                    </option>
-                                <?php endforeach; ?>
+                <!-- Изменение статуса -->
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                    <form method="POST" style="display: flex; gap: 15px; align-items: flex-end;">
+                        <input type="hidden" name="action" value="update_status">
+                        <input type="hidden" name="order_id" value="<?= $order_id ?>">
+                        
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label for="status">Статус заявки:</label>
+                            <select name="status" id="status" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="новая" <?= ($order['Status'] ?? '') === 'новая' ? 'selected' : '' ?>>🆕 Новая</option>
+                                <option value="в работе" <?= ($order['Status'] ?? '') === 'в работе' ? 'selected' : '' ?>>🔄 В работе</option>
+                                <option value="выполнена" <?= ($order['Status'] ?? '') === 'выполнена' ? 'selected' : '' ?>>✅ Выполнена</option>
+                                <option value="отменена" <?= ($order['Status'] ?? '') === 'отменена' ? 'selected' : '' ?>>❌ Отменена</option>
                             </select>
                         </div>
-                        <button type="submit" name="assign_manager" class="btn-small btn-primary">
-                            <?= $order['manager_name'] ? 'Изменить менеджера' : 'Назначить менеджера' ?>
-                        </button>
+                        
+                        <button type="submit" class="btn-small btn-primary">Изменить статус</button>
                     </form>
-                <?php endif; ?>
+                    
+                    <div style="margin-top: 15px;">
+                        <span class="detail-label">Текущий статус:</span>
+                        <?php
+                        $status_class = '';
+                        $status_text = $order['Status'] ?? 'новая';
+                        if ($status_text === 'новая') $status_class = 'status-badge-new';
+                        elseif ($status_text === 'в работе') $status_class = 'status-badge-in-progress';
+                        elseif ($status_text === 'выполнена') $status_class = 'status-badge-completed';
+                        elseif ($status_text === 'отменена') $status_class = 'status-badge-cancelled';
+                        ?>
+                        <span class="status-badge <?= $status_class ?>" style="margin-left: 10px;"><?= htmlspecialchars($status_text) ?></span>
+                    </div>
+                </div>
+                
+                <!-- Назначение менеджера -->
+                <div>
+                    <?php if ($order['manager_name']): ?>
+                        <div style="margin-bottom: 15px;">
+                            <span class="manager-badge">
+                                👤 <?= htmlspecialchars($order['manager_name']) ?>
+                            </span>
+                        </div>
+                    <?php else: ?>
+                        <div style="margin-bottom: 15px;">
+                            <span class="no-manager">
+                                ⚠️ Менеджер не назначен
+                            </span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($role === 'admin'): ?>
+                        <form method="POST">
+                            <div class="form-group">
+                                <label for="manager_id">Назначить менеджера:</label>
+                                <select name="manager_id" id="manager_id" required>
+                                    <option value="">-- Выберите менеджера --</option>
+                                    <?php foreach ($managers as $manager): ?>
+                                        <option value="<?= $manager['ID_personal'] ?>" 
+                                                <?= $order['manager_id'] == $manager['ID_personal'] ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($manager['Fio']) ?> (<?= $manager['Role'] ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit" name="assign_manager" class="btn-small btn-primary">
+                                <?= $order['manager_name'] ? 'Изменить менеджера' : 'Назначить менеджера' ?>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
             </div>
         </main>
     </div>
