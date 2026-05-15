@@ -40,15 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-$page_title = "Вход для персонала";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $page_title ?> - СтройСервис</title>
+    <title>окно авторизации - СтройСервис</title>
     <link rel="stylesheet" href="../../i/Styles/main.css">
     <style>
         body {
@@ -57,6 +55,15 @@ $page_title = "Вход для персонала";
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+        }
+        
+        /* Заголовок страницы вне блока */
+        .page-header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
         }
         
         .login-container {
@@ -85,20 +92,8 @@ $page_title = "Вход для персонала";
             color: #FFD700;
         }
         
-        .login-subtitle {
-            color: #666;
-            font-size: 14px;
-        }
-        
         .form-group {
             margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
         }
         
         .form-group input {
@@ -107,6 +102,12 @@ $page_title = "Вход для персонала";
             border: 1px solid #DDD;
             border-radius: 4px;
             font-size: 14px;
+            background-color: #F5F5F5; /* Серый цвет полей */
+            box-sizing: border-box;
+        }
+        
+        .form-group input::placeholder {
+            color: #999;
         }
         
         .form-group input:focus {
@@ -117,8 +118,8 @@ $page_title = "Вход для персонала";
         
         .btn-login {
             width: 100%;
-            background-color: #FFD700;
-            color: #1A1A1A;
+            background-color: #808080; /* Серая кнопка */
+            color: #FFFFFF;
             padding: 12px;
             border: none;
             border-radius: 4px;
@@ -129,7 +130,7 @@ $page_title = "Вход для персонала";
         }
         
         .btn-login:hover {
-            background-color: #E5C100;
+            background-color: #666666;
             transform: scale(1.02);
         }
         
@@ -150,21 +151,23 @@ $page_title = "Вход для персонала";
             color: #666;
         }
         
-        .login-footer a {
-            color: #FFD700;
-            text-decoration: none;
-        }
-        
-        .login-footer a:hover {
-            text-decoration: underline;
+        /* Подпись внизу */
+        .admin-note {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
+    <!-- Заголовок страницы вне блока -->
+    <h1 class="page-header-title">окно авторизации</h1>
+    
     <div class="login-container">
         <div class="login-header">
             <div class="login-logo">Строй<span>Сервис</span></div>
-            <p class="login-subtitle">Вход для персонала</p>
         </div>
         
         <?php if (!empty($error)): ?>
@@ -173,21 +176,22 @@ $page_title = "Вход для персонала";
         
         <form method="POST" action="">
             <div class="form-group">
-                <label for="login">Логин</label>
-                <input type="text" id="login" name="login" required autofocus>
+                <input type="text" name="login" placeholder="Логин" required autofocus>
             </div>
             
             <div class="form-group">
-                <label for="password">Пароль</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" name="password" placeholder="Пароль" required>
             </div>
             
             <button type="submit" class="btn-login">Войти</button>
         </form>
         
         <div class="login-footer">
-            <a href="../../index.php">← Вернуться на сайт</a>
+            <a href="../../index.php" style="color: #FFD700;">← Вернуться на сайт</a>
         </div>
+        
+        <!-- Подпись внизу -->
+        <div class="admin-note">Для админа (только для фигмы)</div>
     </div>
 </body>
 </html>

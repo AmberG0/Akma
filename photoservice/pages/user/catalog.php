@@ -36,7 +36,7 @@ try {
 }
 
 $page_title = "Каталог услуг";
-include '../../includes/header.php';
+include 'includes/header.php';
 ?>
 
 <div class="container">
@@ -147,21 +147,6 @@ include '../../includes/header.php';
                 <input type="number" id="quantity" name="quantity" min="1" value="1" required>
             </div>
             
-            <div class="form-group">
-                <label for="client_name">Ваше имя:</label>
-                <input type="text" id="client_name" name="client_name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="client_phone">Телефон:</label>
-                <input type="tel" id="client_phone" name="client_phone" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="client_email">Email:</label>
-                <input type="email" id="client_email" name="client_email" required>
-            </div>
-            
             <button type="submit" class="btn-submit">Добавить в подборку</button>
         </form>
     </div>
@@ -228,4 +213,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
