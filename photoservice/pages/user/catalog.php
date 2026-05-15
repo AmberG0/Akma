@@ -67,7 +67,7 @@ include 'includes/header.php';
         <?php else: ?>
             <div class="services-grid">
                 <?php foreach ($services as $service): ?>
-                    <div class="service-card">
+                    <div class="service-card" onclick="window.location.href='service_detail.php?id=<?= $service['ID_services'] ?>'">
                         <!-- Левый блок: Тип, Фото, Кнопка -->
                         <div class="service-left">
                             <span class="service-type"><?= htmlspecialchars($service['category_name'] ?? 'Услуга') ?></span>
@@ -81,14 +81,15 @@ include 'includes/header.php';
                             <button class="btn-order" data-id="<?= $service['ID_services'] ?>" 
                                     data-name="<?= htmlspecialchars($service['Name']) ?>" 
                                     data-price="<?= $service['Price'] ?>" 
-                                    data-unit="<?= htmlspecialchars($service['Unit']) ?>">
+                                    data-unit="<?= htmlspecialchars($service['Unit']) ?>"
+                                    onclick="event.stopPropagation()">
                                 Оформить
                             </button>
                         </div>
 
                         <!-- Центральный блок: Описание -->
                         <div class="service-center">
-                            <h3 class="service-title"><?= htmlspecialchars($service['Name']) ?></h3>
+                            <h3 class="service-title"><a href="service_detail.php?id=<?= $service['ID_services'] ?>" style="color: inherit; text-decoration: none;"><?= htmlspecialchars($service['Name']) ?></a></h3>
                             <p class="service-description"><?= nl2br(htmlspecialchars($service['Description'])) ?></p>
                         </div>
 
