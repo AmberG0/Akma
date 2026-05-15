@@ -55,8 +55,8 @@ include 'includes/header.php';
             <!-- Левая колонка: Фото и основная информация -->
             <div class="detail-left">
                 <div class="detail-photo">
-                    <?php if (!empty($service['Photo']) && file_exists('../../' . $service['Photo'])): ?>
-                        <img src="../../<?= htmlspecialchars($service['Photo']) ?>" alt="<?= htmlspecialchars($service['Name']) ?>">
+                    <?php if (!empty($service['Photo']) && file_exists('../../uploads/' . $service['Photo'])): ?>
+                        <img src="../../uploads/<?= htmlspecialchars($service['Photo']) ?>" alt="<?= htmlspecialchars($service['Name']) ?>">
                     <?php else: ?>
                         <div class="photo-placeholder-large">Нет фото</div>
                     <?php endif; ?>
@@ -125,8 +125,8 @@ include 'includes/header.php';
                     <div class="service-left">
                         <span class="service-type"><?= htmlspecialchars($similar['category_name'] ?? 'Услуга') ?></span>
                         <div class="service-photo">
-                            <?php if (!empty($similar['Photo']) && file_exists('../../' . $similar['Photo'])): ?>
-                                <img src="../../<?= htmlspecialchars($similar['Photo']) ?>" alt="<?= htmlspecialchars($similar['Name']) ?>">
+                            <?php if (!empty($similar['Photo']) && file_exists('../../uploads/' . $similar['Photo'])): ?>
+                                <img src="../../uploads/<?= htmlspecialchars($similar['Photo']) ?>" alt="<?= htmlspecialchars($similar['Name']) ?>">
                             <?php else: ?>
                                 <div class="photo-placeholder">Нет фото</div>
                             <?php endif; ?>

@@ -1,8 +1,7 @@
--- Исправленный SQL для добавления поля Status в таблицу Orders
--- Выполните этот запрос в phpMyAdmin или через консоль MySQL
+-- Исправленный SQL запрос для добавления поля Status в таблицу Orders
+-- Выполнить в базе данных construction_site
 
-ALTER TABLE Orders 
-ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Type_pay;
+ALTER TABLE Orders ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Type_pay;
 
--- Обновляем существующие заявки на "новая"
-UPDATE Orders SET Status = 'новая' WHERE Status IS NULL;
+-- Обновление существующих заявок на "новая"
+UPDATE Orders SET Status = 'новая' WHERE Status IS NULL OR Status = '';

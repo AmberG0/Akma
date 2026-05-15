@@ -43,25 +43,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
     // Обработка загрузки фото
     $photo = '';
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        // Абсолютный путь к папке загрузки (относительно этого файла)
-        $upload_dir = __DIR__ . '/../../uploads/services/';
-        $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        $file_type = $_FILES['photo']['type'];
-        $file_size = $_FILES['photo']['size'];
+        // Путь к папке загрузки (локально в проекте)
+        $upload_dir = __DIR__ . '/../../uploads/';
+        $allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         $file_tmp = $_FILES['photo']['tmp_name'];
         $file_name = basename($_FILES['photo']['name']);
         
-        // Проверка типа файла
-        if (!in_array($file_type, $allowed_types)) {
-            $message = 'Разрешены только изображения (JPEG, PNG, GIF, WebP)';
-            $message_type = 'error';
-        } elseif ($file_size > 5 * 1024 * 1024) { // 5MB max
-            $message = 'Размер файла не должен превышать 5MB';
+        // Получаем расширение
+        $extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        
+        // Проверка расширения
+        if (!in_array($extension, $allowed_ext)) {
+            $message = 'Разрешены только изображения (JPG, PNG, GIF, WebP)';
             $message_type = 'error';
         } else {
             // Генерация уникального имени
-            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
-            $new_filename = 'service_' . time() . '_' . uniqid() . '.' . $extension;
+            $new_filename = 'serv_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
             $upload_path = $upload_dir . $new_filename;
             
             // Создаем директорию если не существует
@@ -70,15 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
             }
             
             if (move_uploaded_file($file_tmp, $upload_path)) {
-                // Сохраняем путь относительно корня сайта для БД и отображения
-                $photo = 'uploads/services/' . $new_filename;
-                $message = 'Фото успешно загружено: ' . $photo;
+                // Сохраняем только имя файла в БД
+                $photo = $new_filename;
+                $message = 'Фото успешно загружено';
                 $message_type = 'success';
             } else {
-                $message = 'Ошибка при загрузке файла. Проверьте права доступа к папке: ' . $upload_dir;
+                $message = 'Ошибка при загрузке файла';
                 $message_type = 'error';
-                error_log('Не удалось переместить файл из ' . $file_tmp . ' в ' . $upload_path);
-                error_log('Права на папку: ' . substr(sprintf('%o', fileperms($upload_dir)), -4));
             }
         }
     } elseif ($service_id) {
@@ -511,6 +506,7 @@ $page_title = "Управление услугами";
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Фото</th>
                                 <th>Название</th>
                                 <th>Категория</th>
                                 <th>Цена</th>
@@ -523,6 +519,13 @@ $page_title = "Управление услугами";
                             <?php foreach ($services as $service): ?>
                                 <tr data-category="<?= $service['Category'] ?>">
                                     <td>#<?= $service['ID_services'] ?></td>
+                                    <td>
+                                        <?php if (!empty($service['Photo'])): ?>
+                                            <img src="../../uploads/<?= htmlspecialchars($service['Photo']) ?>" alt="Фото" style="width:50px;height:50px;object-fit:cover;border-radius:4px;">
+                                        <?php else: ?>
+                                            <div style="width:50px;height:50px;background:#eee;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;">Нет фото</div>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= htmlspecialchars($service['Name']) ?></td>
                                     <td><?= htmlspecialchars($service['category_name'] ?? 'Без категории') ?></td>
                                     <td><?= number_format($service['Price'], 2) ?> ₽</td>
