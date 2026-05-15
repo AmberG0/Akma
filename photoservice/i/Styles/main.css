@@ -2026,6 +2026,21 @@ body.dark-theme .section-title {
     color: #FFFFFF;
 }
 
+.status-badge-in-progress {
+    background-color: #28a745;
+    color: #FFFFFF;
+}
+
+.status-badge-completed {
+    background-color: #17a2b8;
+    color: #FFFFFF;
+}
+
+.status-badge-cancelled {
+    background-color: #6c757d;
+    color: #FFFFFF;
+}
+
 /* ==========================================================================
    Административная панель
    ========================================================================== */
@@ -2230,6 +2245,21 @@ body.dark-theme .section-title {
 
 .status-badge-assigned {
     background-color: #28a745;
+    color: #FFFFFF;
+}
+
+.status-badge-in-progress {
+    background-color: #28a745;
+    color: #FFFFFF;
+}
+
+.status-badge-completed {
+    background-color: #17a2b8;
+    color: #FFFFFF;
+}
+
+.status-badge-cancelled {
+    background-color: #6c757d;
     color: #FFFFFF;
 }
 

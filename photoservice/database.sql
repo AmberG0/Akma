@@ -63,6 +63,7 @@ CREATE TABLE Orders (
     Face_client VARCHAR(255),
     Accept_order_Per_ID INT,
     Other_inform TEXT,
+    Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая',
     FOREIGN KEY (Service_tab_ID) REFERENCES Services_tab(Service_tab_ID) ON DELETE SET NULL,
     FOREIGN KEY (Accept_order_Per_ID) REFERENCES Personnel(ID_personal) ON DELETE SET NULL
 ) ENGINE=InnoDB;

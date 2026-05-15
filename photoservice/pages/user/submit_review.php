@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Валидация
     if (empty($client_name) || empty($review_text)) {
-        header('Location: works.php?error=1');
+        $_SESSION['review_error'] = 'Заполните все обязательные поля';
+        header('Location: works.php');
         exit;
     }
     
@@ -23,12 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("INSERT INTO Reviews (Client_name, Review_text, Rating, Is_published) VALUES (?, ?, ?, 'Нет')");
         $stmt->execute([$client_name, $review_text, $rating]);
         
-        // Перенаправление на страницу с успехом
-        header('Location: works.php?success=1');
+        // Успешное сохранение
+        $_SESSION['review_success'] = 'Ваш отзыв отправлен на модерацию. Спасибо!';
+        header('Location: works.php');
         exit;
     } catch (PDOException $e) {
         error_log('Ошибка при сохранении отзыва: ' . $e->getMessage());
-        header('Location: works.php?error=1');
+        $_SESSION['review_error'] = 'Произошла ошибка при отправке отзыва. Попробуйте позже.';
+        header('Location: works.php');
         exit;
     }
 } else {
