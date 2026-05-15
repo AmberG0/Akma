@@ -2702,3 +2702,91 @@ body.dark-theme .section-title {
         font-size: 32px;
     }
 }
+/* =============================================
+   СТИЛИ ДЛЯ ОПЛАТЫ КАРТОЙ (CART.PHP)
+   ============================================= */
+.payment-card-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.payment-title {
+    color: #1A1A1A;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-inputs .form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.card-inputs .form-group input {
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    padding: 12px 15px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.card-inputs .form-group input:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    outline: none;
+}
+
+#card_number {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
+
+#card_expiry,
+#card_cvv {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#card_holder {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.payment-note {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #28a745;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Анимация пульсации для новых заявок */
+@keyframes pulse-yellow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+}
+
+.order-row-new {
+    animation: pulse-yellow 2s infinite;
+}

@@ -25,6 +25,12 @@ $payment_type = 'card'; // Только оплата картой
 $privacy_consent = isset($_POST['privacy_consent']) ? true : false;
 $comments = isset($_POST['comments']) ? trim($_POST['comments']) : '';
 
+// Данные карты
+$card_number = isset($_POST['card_number']) ? trim($_POST['card_number']) : '';
+$card_expiry = isset($_POST['card_expiry']) ? trim($_POST['card_expiry']) : '';
+$card_cvv = isset($_POST['card_cvv']) ? trim($_POST['card_cvv']) : '';
+$card_holder = isset($_POST['card_holder']) ? trim($_POST['card_holder']) : '';
+
 // Валидация обязательных полей
 $errors = [];
 if (empty($client_name)) {
@@ -38,6 +44,40 @@ if (empty($client_email)) {
 }
 if (!$privacy_consent) {
     $errors[] = 'Необходимо согласие на обработку персональных данных';
+}
+
+// Валидация данных карты
+if (empty($card_number)) {
+    $errors[] = 'Необходимо указать номер карты';
+} elseif (!preg_match('/^[0-9\s]{13,19}$/', $card_number)) {
+    $errors[] = 'Некорректный номер карты';
+}
+
+if (empty($card_expiry)) {
+    $errors[] = 'Необходимо указать срок действия карты';
+} elseif (!preg_match('/^(0[1-9]|1[0-2])\/[0-9]{2}$/', $card_expiry)) {
+    $errors[] = 'Некорректный срок действия карты (формат ММ/ГГ)';
+} else {
+    // Проверка срока действия карты
+    list($exp_month, $exp_year) = explode('/', $card_expiry);
+    $current_year = date('y');
+    $current_month = date('n');
+    
+    if ($exp_year < $current_year || ($exp_year == $current_year && $exp_month < $current_month)) {
+        $errors[] = 'Срок действия карты истёк';
+    }
+}
+
+if (empty($card_cvv)) {
+    $errors[] = 'Необходимо указать CVV/CVC код';
+} elseif (!preg_match('/^[0-9]{3}$/', $card_cvv)) {
+    $errors[] = 'Некорректный CVV/CVC код (должен быть 3 цифры)';
+}
+
+if (empty($card_holder)) {
+    $errors[] = 'Необходимо указать имя держателя карты';
+} elseif (!preg_match('/^[A-Z\s]+$/', strtoupper($card_holder))) {
+    $errors[] = 'Имя держателя карты должно быть указано латинскими буквами';
 }
 
 if (!empty($errors)) {

@@ -43,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
     // Обработка загрузки фото
     $photo = '';
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = '../../uploads/services/';
+        // Используем абсолютный путь относительно корня проекта
+        $upload_dir = __DIR__ . '/../../uploads/services/';
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         $file_type = $_FILES['photo']['type'];
         $file_size = $_FILES['photo']['size'];
@@ -63,11 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role === 'admin') {
             $new_filename = 'service_' . time() . '_' . uniqid() . '.' . $extension;
             $upload_path = $upload_dir . $new_filename;
             
+            // Создаем директорию если не существует
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+            
             if (move_uploaded_file($file_tmp, $upload_path)) {
+                // Сохраняем относительный путь для БД
                 $photo = 'uploads/services/' . $new_filename;
             } else {
-                $message = 'Ошибка при загрузке файла';
+                $message = 'Ошибка при загрузке файла. Проверьте права доступа к папке uploads/services/';
                 $message_type = 'error';
+                error_log('Не удалось переместить файл из ' . $file_tmp . ' в ' . $upload_path);
             }
         }
     } elseif ($service_id) {
