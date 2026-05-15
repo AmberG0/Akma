@@ -173,25 +173,26 @@
 - [x] Главная страница (index.php, pages/user/main.php)
 - [x] Страница "О компании" (pages/user/about.php)
 - [x] Страница "Наша политика" (pages/user/policy.php)
-- [x] Страница "Каталог услуг" (pages/user/catalog.php)
+- [x] Страница "Каталог услуг" (pages/user/catalog.php) - с поиском и сортировкой
 - [x] Обработчик add_to_cart.php для добавления услуг в подборку
-- [x] Страница просмотра подборки (pages/user/cart.php)
-- [x] Форма оформления заявки (checkout.php)
+- [x] Страница просмотра подборки (pages/user/cart.php) - компактная форма оплаты картой
+- [x] Форма оформления заявки (checkout.php) - с валидацией карты
 - [x] Страница успешного заказа (order_success.php)
 - [x] AJAX обновление корзины (update_cart.php)
-- [x] SQL схема базы данных (database.sql) - ОБНОВЛЕНО ПО ОРИГИНАЛУ
+- [x] SQL схема базы данных (database.sql)
 - [x] Административная панель - вход (login.php)
 - [x] Административная панель - dashboard (dashboard.php)
 - [x] Выход из админки (logout.php)
-- [x] Все стили добавлены в i/Styles/main.css
-- [x] Управление заявками (orders.php, order_view.php)
-- [x] CRUD для услуг (services.php)
+- [x] Все стили в одном файле i/Styles/main.css
+- [x] Управление заявками (orders.php, order_view.php) - со статусами и выделением
+- [x] CRUD для услуг (services.php) - с загрузкой фото в uploads/services/
 - [x] CRUD для категорий (categories.php)
 - [x] Управление персоналом (personnel.php) - только для админа
 - [x] Карточка услуги для пользователя (service_detail.php)
 - [x] Страница "Наши работы" (pages/user/works.php) - отзывы клиентов
 - [x] Обработчик отзывов (submit_review.php)
 - [x] Модерация отзывов в админке (pages/admin/reviews.php)
+- [x] SQL файлы: update_status_fixed.sql, reviews_table.sql
 
 Структура проекта:
 /workspace/photoservice/

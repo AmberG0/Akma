@@ -114,30 +114,30 @@ $client_address = isset($_SESSION['client']['address']) ? $_SESSION['client']['a
                 <!-- Блок оплаты картой -->
                 <div class="payment-card-section">
                     <h3 class="payment-title">💳 Оплата банковской картой</h3>
-                    <div class="card-inputs">
-                        <div class="form-group">
+                    <div class="card-inputs-compact">
+                        <div class="form-group-compact">
                             <label for="card_number">Номер карты *</label>
                             <input type="text" id="card_number" name="card_number" required placeholder="0000 0000 0000 0000" maxlength="19" pattern="[0-9\s]{13,19}">
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="card_expiry">Срок действия *</label>
-                                <input type="text" id="card_expiry" name="card_expiry" required placeholder="ММ/ГГ" maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                        <div class="form-row-compact">
+                            <div class="form-group-compact">
+                                <label for="card_expiry">Срок *</label>
+                                <input type="text" id="card_expiry" name="card_expiry" required placeholder="ММ/ГГ" maxlength="5" pattern="(0[1-9]|1[0-2])/[0-9]{2}">
                             </div>
                             
-                            <div class="form-group">
-                                <label for="card_cvv">CVV/CVC *</label>
+                            <div class="form-group-compact">
+                                <label for="card_cvv">CVV *</label>
                                 <input type="password" id="card_cvv" name="card_cvv" required placeholder="123" maxlength="3" pattern="[0-9]{3}">
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="card_holder">Имя держателя карты *</label>
+                        <div class="form-group-compact">
+                            <label for="card_holder">Имя держателя *</label>
                             <input type="text" id="card_holder" name="card_holder" required placeholder="IVAN IVANOV" pattern="[A-Z\s]+">
                         </div>
                     </div>
-                    <p class="payment-note">🔒 Оплата защищена протоколом 3D Secure</p>
+                    <p class="payment-note">🔒 3D Secure</p>
                 </div>
                 
                 <div class="form-group privacy-consent">

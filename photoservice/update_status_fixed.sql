@@ -1,8 +1,8 @@
--- Исправленный SQL запрос для добавления столбца Status в таблицу Orders
--- Сначала проверяем существует ли столбец, если нет - добавляем
+-- Исправленный SQL для добавления поля Status в таблицу Orders
+-- Выполните этот запрос в phpMyAdmin или через консоль MySQL
 
 ALTER TABLE Orders 
-ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Other_inform;
+ADD COLUMN Status ENUM('новая', 'в работе', 'выполнена', 'отменена') DEFAULT 'новая' AFTER Type_pay;
 
--- Обновляем существующие записи на 'новая'
-UPDATE Orders SET Status = 'новая' WHERE Status IS NULL OR Status = '';
+-- Обновляем существующие заявки на "новая"
+UPDATE Orders SET Status = 'новая' WHERE Status IS NULL;
