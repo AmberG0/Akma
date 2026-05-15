@@ -264,10 +264,12 @@ $page_title = "Панель управления";
                 <?php if ($role === 'admin'): ?>
                     <li><a href="orders.php">📋 Заявки</a></li>
                     <li><a href="services.php">🛠️ Услуги</a></li>
+                    <li><a href="categories.php">📁 Категории</a></li>
                     <li><a href="personnel.php">👥 Персонал</a></li>
                 <?php else: ?>
                     <li><a href="orders.php">📋 Заявки</a></li>
                     <li><a href="services.php">🛠️ Услуги</a></li>
+                    <li><a href="categories.php">📁 Категории</a></li>
                 <?php endif; ?>
                 <li><a href="../../index.php">🏠 На сайт</a></li>
                 <li><a href="logout.php" class="logout">Выйти</a></li>
